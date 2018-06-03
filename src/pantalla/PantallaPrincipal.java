@@ -1,4 +1,4 @@
-package soporteJavaParser;
+package pantalla;
 import java.awt.BorderLayout;
 
 import java.awt.EventQueue;
@@ -30,7 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class Pprin extends JFrame {
+public class PantallaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 
@@ -41,7 +41,7 @@ public class Pprin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Pprin frame = new Pprin();
+					PantallaPrincipal frame = new PantallaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +53,7 @@ public class Pprin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Pprin() {
+	public PantallaPrincipal() {
 		setTitle("Herramienta de Testing");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550);

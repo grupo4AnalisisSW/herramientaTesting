@@ -1,4 +1,4 @@
-package soporteJavaParser;
+package pantalla;
 
 import java.io.File;
 import javax.swing.filechooser.*;
@@ -9,9 +9,9 @@ public class FileTypeFilter extends FileFilter {
 	private final String extension;
 	private final String descripcion;
 	
-	public FileTypeFilter(String extencion,String descripcion) {
+	public FileTypeFilter(String extension,String descripcion) {
 		this.descripcion = descripcion;
-		this.extension = extencion;
+		this.extension = extension;
 	}
 	@Override
 	public boolean accept(File f) {
