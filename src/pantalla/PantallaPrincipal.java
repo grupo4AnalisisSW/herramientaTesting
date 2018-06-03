@@ -29,6 +29,7 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
 
 
 public class PantallaPrincipal extends JFrame {
@@ -77,7 +78,7 @@ public class PantallaPrincipal extends JFrame {
 				//codigo.setText(listMetodos.getSelectedItem());
 			}
 		});
-		listMetodos.setBounds(401, 213, 369, 135);
+		listMetodos.setBounds(401, 226, 369, 135);
 		contentPane.add(listMetodos);
 		
 		List listClases = new List();
@@ -88,7 +89,7 @@ public class PantallaPrincipal extends JFrame {
 				listMetodos.add(listClases.getSelectedItem());
 			}
 		});
-		listClases.setBounds(10, 215, 362, 135);
+		listClases.setBounds(10, 228, 362, 135);
 		contentPane.add(listClases);
 		
 		List listArchivos = new List();
@@ -145,13 +146,13 @@ public class PantallaPrincipal extends JFrame {
 		JLabel lblSeleccioneUnaClase = new JLabel("Seleccione una clase de la lista:");
 		lblSeleccioneUnaClase.setForeground(new Color(178, 34, 34));
 		lblSeleccioneUnaClase.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSeleccioneUnaClase.setBounds(10, 193, 362, 16);
+		lblSeleccioneUnaClase.setBounds(10, 206, 362, 16);
 		contentPane.add(lblSeleccioneUnaClase);
 		
 		JLabel lblSeleccioneUnMetodo = new JLabel("Seleccione un metodo de la lista:");
 		lblSeleccioneUnMetodo.setForeground(new Color(178, 34, 34));
 		lblSeleccioneUnMetodo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSeleccioneUnMetodo.setBounds(401, 193, 369, 16);
+		lblSeleccioneUnMetodo.setBounds(401, 206, 369, 16);
 		contentPane.add(lblSeleccioneUnMetodo);
 		
 		JLabel lblLineasDeCdigo = new JLabel("Lineas de c\u00F3digo del archivo:");
@@ -231,6 +232,10 @@ public class PantallaPrincipal extends JFrame {
 		lblvol.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		lblvol.setBounds(401, 465, 369, 30);
 		contentPane.add(lblvol);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 193, 764, 2);
+		contentPane.add(separator);
 		
 	}
 }
