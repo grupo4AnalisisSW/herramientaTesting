@@ -1,3 +1,4 @@
+
 package soporteJavaParser;
 
 import com.github.javaparser.ast.Node;
@@ -13,11 +14,11 @@ public class NodeIterator {
         this.nodeHandler = nodeHandler;
     }
  
-    /**
+    
      * Explora recursivamente todo el arbol AST.
      * No distingue entre sentencias.
      * @param node
-     */
+    
     public void explore(Node node) {
         if (nodeHandler.handle(node)) {
             for (Node child : node.getChildrenNodes()) {
