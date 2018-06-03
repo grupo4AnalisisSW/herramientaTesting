@@ -70,37 +70,37 @@ public class PantallaPrincipal extends JFrame {
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
-		List motodos = new List();
-		motodos.addMouseListener(new MouseAdapter() {
+		List listMetodos = new List();
+		listMetodos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				codigo.setText(motodos.getSelectedItem());
+				//codigo.setText(listMetodos.getSelectedItem());
 			}
 		});
-		motodos.setBounds(401, 213, 369, 135);
-		contentPane.add(motodos);
+		listMetodos.setBounds(401, 213, 369, 135);
+		contentPane.add(listMetodos);
 		
-		List clases = new List();
-		clases.addMouseListener(new MouseAdapter() {
+		List listClases = new List();
+		listClases.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				motodos.removeAll();
-				motodos.add(clases.getSelectedItem());
+				listMetodos.removeAll();
+				listMetodos.add(listClases.getSelectedItem());
 			}
 		});
-		clases.setBounds(10, 215, 362, 135);
-		contentPane.add(clases);
+		listClases.setBounds(10, 215, 362, 135);
+		contentPane.add(listClases);
 		
-		List archivos = new List();
-		archivos.addMouseListener(new MouseAdapter() {
+		List listArchivos = new List();
+		listArchivos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				clases.removeAll();
-				clases.add(archivos.getSelectedItem());
+				listClases.removeAll();
+				listClases.add(listArchivos.getSelectedItem());
 			}
 		});
-		archivos.setBounds(10, 57, 362, 130);
-		contentPane.add(archivos);
+		listArchivos.setBounds(10, 57, 362, 130);
+		contentPane.add(listArchivos);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir directorio");
 		mntmAbrir.addActionListener(new ActionListener() {
@@ -124,7 +124,7 @@ public class PantallaPrincipal extends JFrame {
 					}
 				} else {
 					if (f.getName().endsWith(ext)) {
-						archivos.add(f.getPath());
+						listArchivos.add(f.getPath());
 					}						
 				}				
 			}
