@@ -1,5 +1,7 @@
 package backend;
 
+import java.io.File;
+
 import com.github.javaparser.ast.CompilationUnit;
 
 public class Archivo {
@@ -7,10 +9,12 @@ public class Archivo {
 	private int lineasTotales = -1;
 	private double porcentajeComentarios = -1;
 	private CompilationUnit arbol;
-	private String path;
+	private String nombre;
 	
-	public Archivo(String path) {
+	public Archivo(File archivo) {
 		//Abrir archivo, crear arbol, lo que haga falta
+		this.nombre = archivo.getName();
+		
 		calcularLineasTotales();
 		calcularPorcentajeComentarios();
 	}
@@ -36,8 +40,8 @@ public class Archivo {
 		return arbol;
 	}
 
-	public String getPath() {
-		return path;
+	public String getNombre() {
+		return nombre;
 	}
 	
 }

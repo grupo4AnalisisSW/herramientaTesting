@@ -1,19 +1,25 @@
 package backend;
 
+import java.io.File;
+import java.util.ArrayList;
+
 /**
  * Ash Nazg durbatulûk, ash Nazg gimbatul, ash Nazg thrakatulûk agh burzum-ishi krimpatul.
  * @author Leyluchy
  *
  */
 public class Controlador {
-	private Archivo[] archivos;
-	private Clase[] clases;
+	private ArrayList<Archivo> archivos;
+	private ArrayList<Clase> clases;
 	
-	public void procesar(String directorio){
+	public void procesar(File directorio){
+		archivos = new ArrayList<Archivo>();
+		clases = new ArrayList<Clase>();
+		
 		/*El orden de procesamiento tiene que ser este
 		 * Cada parte puede hacerlo esta misma clase o delegarselo a otras
 		 */
-		abrirYParsearArchivos();
+		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
 		calcularFans();
 		calcularComplejidadesCiclomaticas();
@@ -46,10 +52,27 @@ public class Controlador {
 		
 	}
 
-	private void abrirYParsearArchivos() {
-		// TODO Auto-generated method stub
-		
+	private void abrirYParsearArchivos(File directorio) {
+		levantarArchivos(directorio, ".java");
 	}
 	
+
+
+	private void levantarArchivos(File f,String ext) {
+		if (f.isDirectory()) 
+			for (File arch: f.listFiles()) 
+				levantarArchivos(arch,ext);
+		else
+			if (f.getName().endsWith(ext))
+				archivos.add(new Archivo(f));								
+	}
+
+	public ArrayList<Archivo> getArchivos() {
+		return archivos;
+	}
+
+	public ArrayList<Clase> getClases() {
+		return clases;
+	}
 	
 }

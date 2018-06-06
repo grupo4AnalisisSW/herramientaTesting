@@ -1,4 +1,8 @@
 package pantalla;
+
+import backend.Archivo;
+import backend.Controlador;
+
 import java.awt.BorderLayout;
 
 import java.awt.EventQueue;
@@ -35,6 +39,7 @@ import javax.swing.JSeparator;
 public class PantallaPrincipal extends JFrame {
 
 	private JPanel contentPane;
+	private Controlador elControlador;
 
 	/**
 	 * Launch the application.
@@ -56,6 +61,8 @@ public class PantallaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public PantallaPrincipal() {
+		elControlador = new Controlador();
+		
 		setTitle("Herramienta de Testing");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 584);
@@ -112,22 +119,15 @@ public class PantallaPrincipal extends JFrame {
 				js.setFileSelectionMode(js.DIRECTORIES_ONLY);
 				int result = js.showOpenDialog(null);
 				if (result==js.APPROVE_OPTION) {
+					elControlador.procesar(js.getSelectedFile());
+					for(Archivo arch : elControlador.getArchivos())
+						listArchivos.add(arch.getNombre());
+					/*
 					for (File f : js.getSelectedFile().listFiles()) {
 						levantarArchivos(f,".java");
 					}
+					*/
 				}
-			}
-
-			private void levantarArchivos(File f,String ext) {
-				if (f.isDirectory()) {
-					for (File arch: f.listFiles()) {
-						levantarArchivos(arch,ext);
-					}
-				} else {
-					if (f.getName().endsWith(ext)) {
-						listArchivos.add(f.getPath());
-					}						
-				}				
 			}
 
 		});
