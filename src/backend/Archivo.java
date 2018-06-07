@@ -15,6 +15,7 @@ public class Archivo {
 	private double porcentajeComentarios = -1;
 	private CompilationUnit arbol;
 	private String nombre;
+	private String codigo;
 	private ArrayList<String> lineas;
 	private int cantComentarios;
 	
@@ -93,6 +94,14 @@ public class Archivo {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
 }

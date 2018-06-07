@@ -3,8 +3,11 @@ package backend;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
@@ -29,17 +32,41 @@ public class Controlador {
 		armarClasesYMetodos();
 		
 		//Estas podrian ser procesarMetodos()
-		calcularFans();
-		//Estas 3 podrian estar dentro de Metodo
+		calcularFansIn();
+		//Estas 4 podrian estar dentro de Metodo
+		//calcularFansOut();
 		//calcularComplejidadesCiclomaticas();
 		//calcularLongitudes();
 		//calcularVolumenes();
 	}
 
-	private void calcularFans() {
-		// TODO Auto-generated method stub
+	/**
+	 * Calcula los fan in de todos los métodos de cada clase
+	 * usando su lista de métodos.
+	 * */
+	private void calcularFansIn() {
+		clases.forEach(null);
+		for (Clase clase : clases.values()) {
+			for (Metodo metodo : clase.getMetodos()) {
+				metodo.setFanIn(calcularFanIn(archivos.values(), metodo));
+			}
+		}
 		
 	}
+	
+	public static int calcularFanIn(Collection<Archivo> archivos, Metodo metodo) {
+        int contador = 0;
+        if (metodo.getNombre().equals("main"))
+            return 0;
+        String regex = "\\s" + metodo.getNombre() + "\\(";
+        for (Archivo archivo : archivos) {
+            Pattern pat = Pattern.compile(regex);
+            Matcher mat = pat.matcher(archivo.getCodigo());
+            while(mat.find())
+                contador++;
+        }
+        return (contador==0)? contador:contador - 1;
+    }
 
 	/**
 	 * Genera la lista de Clases a partir de los Archivos.

@@ -1,27 +1,26 @@
 package backend;
 
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.DoStmt;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.ForeachStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
-import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.SwitchEntryStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.sun.javafx.fxml.expression.BinaryExpression;
-
-import soporteJavaParser.NodeIterator;
 
 public class Metodo {
+	
+	private static final String REGEX_METODO = "([a-zA-Z_][\\w\\<\\>]*)";
 
 	private String nombre;
+	private static String cuerpo;
 	private int fanIn = -1;
 	private int fanOut = -1;
 	private int longitud = -1;
@@ -32,6 +31,14 @@ public class Metodo {
 	public Metodo(MethodDeclaration nodo) {
 		this.nodo = nodo;
 		this.setNombre(nodo.getNameAsString());
+		
+		String declaracion = nodo.getDeclarationAsString().replaceAll("/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/", "").replaceAll("//.*[\n\r]", "").replaceAll("^\\s*\n", "");
+        this.setCuerpo("");
+        String[] body = declaracion.split("\\n");
+        for (int i = 0; i < body.length; i++) {
+            if (i != 0 && i != body.length - 1)
+                this.setCuerpo(getCuerpo() + body[i]);
+        }
 	}
 	
 	/**
@@ -42,6 +49,7 @@ public class Metodo {
 		calcularComplejidadCiclomatica();
 		calcularLongitud();
 		calcularVolumen();
+		setFanOut(calcularFanOut());
 	}
 	
 	private void calcularVolumen() {
@@ -53,6 +61,20 @@ public class Metodo {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * Calcula los fan out de cada método usando la regex de métodos
+	 * para buscar en el código.
+	 * */
+	public static int calcularFanOut() {
+        int contador = 0;
+        String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
+        Pattern pat = Pattern.compile(regex);
+        Matcher mat = pat.matcher(getCuerpo());
+        while(mat.find())
+            contador++;
+        return contador;
+    }
 
 	private void calcularComplejidadCiclomatica() {
 		if(complejidadCiclomatica > 0)
@@ -173,5 +195,13 @@ public class Metodo {
 	}
 	public void setComplejidadCiclomatica(int complejidadCiclomatica) {
 		this.complejidadCiclomatica = complejidadCiclomatica;
+	}
+
+	public static String getCuerpo() {
+		return cuerpo;
+	}
+
+	public void setCuerpo(String cuerpo) {
+		Metodo.cuerpo = cuerpo;
 	}
 }
