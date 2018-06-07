@@ -79,33 +79,45 @@ public class PantallaPrincipal extends JFrame {
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
+		//Lista de metodos
 		List listMetodos = new List();
 		listMetodos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//Que hacer cuando clickean un metodo
 				//codigo.setText(listMetodos.getSelectedItem());
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
 		contentPane.add(listMetodos);
 		
+		//Lista de clases
 		List listClases = new List();
 		listClases.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				//Que hacer cuando clickean una clase
+				//Listar los metodos de esa clase
 				listMetodos.removeAll();
-				listMetodos.add(listClases.getSelectedItem());
+				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedItem()))
+					listMetodos.add(nombreMetodo);
 			}
 		});
 		listClases.setBounds(10, 267, 362, 135);
 		contentPane.add(listClases);
 		
+		//Lista de archivos
 		List listArchivos = new List();
 		listArchivos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				//Que hacer cuando clickean un archivo
+				//Mostrar datos de ese archivo
+				
+				/*
 				listClases.removeAll();
 				listClases.add(listArchivos.getSelectedItem());
+				*/
 			}
 		});
 		listArchivos.setBounds(6, 77, 362, 130);
@@ -126,8 +138,10 @@ public class PantallaPrincipal extends JFrame {
 						// TODO Auto-generated catch block
 						e.printStackTrace();//Poner algo acá
 					}
-					for(Archivo arch : elControlador.getArchivos())
-						listArchivos.add(arch.getNombre());
+					for(String arch : elControlador.traerArchivos())
+						listArchivos.add(arch);
+					for(String clase : elControlador.traerClases())
+						listClases.add(clase);
 					/*
 					for (File f : js.getSelectedFile().listFiles()) {
 						levantarArchivos(f,".java");

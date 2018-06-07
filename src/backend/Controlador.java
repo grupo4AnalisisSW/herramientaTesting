@@ -3,6 +3,8 @@ package backend;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
@@ -13,12 +15,12 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
  *
  */
 public class Controlador {
-	private ArrayList<Archivo> archivos;
-	private ArrayList<Clase> clases;
+	private HashMap<String, Archivo> archivos;
+	private HashMap<String, Clase> clases;
 	
 	public void procesar(File directorio) throws FileNotFoundException{
-		archivos = new ArrayList<Archivo>();
-		clases = new ArrayList<Clase>();
+		archivos = new HashMap<String, Archivo>();
+		clases = new HashMap<String, Clase>();
 		
 		/*El orden de procesamiento tiene que ser este
 		 * Cada parte puede hacerlo esta misma clase o delegarselo a otras
@@ -34,21 +36,6 @@ public class Controlador {
 		//calcularVolumenes();
 	}
 
-	private void calcularVolumenes() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void calcularLongitudes() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void calcularComplejidadesCiclomaticas() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void calcularFans() {
 		// TODO Auto-generated method stub
 		
@@ -59,12 +46,13 @@ public class Controlador {
 	 * Cada clase genera su lista de Metodos.
 	 */
 	private void armarClasesYMetodos() {
-		for(Archivo arch : archivos) {
+		for(Archivo arch : archivos.values()) {
 			new VoidVisitorAdapter<Object>() {
                 @Override
                 public void visit(ClassOrInterfaceDeclaration n, Object arg) {
                     super.visit(n, arg);
-                    clases.add(new Clase(n));
+                    Clase clase = new Clase(n);
+                    clases.put(clase.getNombre(), clase);
                 }
             }.visit(arch.getArbol(), null);
 		}
@@ -91,16 +79,41 @@ public class Controlador {
 			for (File arch: f.listFiles()) 
 				levantarArchivos(arch,ext);
 		else
-			if (f.getName().endsWith(ext))
-				archivos.add(new Archivo(f));								
+			if (f.getName().endsWith(ext)) {
+				Archivo arch = new Archivo(f);
+				archivos.put(arch.getNombre(), arch);
+			}
 	}
 
-	public ArrayList<Archivo> getArchivos() {
+	/*
+	public HashMap<String, Archivo> getArchivos() {
 		return archivos;
 	}
 
-	public ArrayList<Clase> getClases() {
+	public HashMap<String, Clase> getClases() {
 		return clases;
+	}
+	*/
+	
+	public List<String> traerMetodosDeClase(String nombreClase) {
+		ArrayList<String> listaMetodos = new ArrayList<String>();
+		for(Metodo met : clases.get(nombreClase).getMetodos())
+			listaMetodos.add(met.getNombre());
+		return listaMetodos;
+	}
+	
+	public List<String> traerArchivos(){
+		ArrayList<String> listaArchivos = new ArrayList<String>();
+		for(Archivo arch : archivos.values())
+			listaArchivos.add(arch.getNombre());
+		return listaArchivos;
+	}
+
+	public List<String> traerClases() {
+		ArrayList<String> listaClases = new ArrayList<String>();
+		for(Clase clase : clases.values())
+			listaClases.add(clase.getNombre());
+		return listaClases;
 	}
 	
 }
