@@ -1,13 +1,14 @@
 package backend;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 /**
- * Ash Nazg durbatulûk, ash Nazg gimbatul, ash Nazg thrakatulûk agh burzum-ishi krimpatul.
+ * Ash Nazg durbatulï¿½k, ash Nazg gimbatul, ash Nazg thrakatulï¿½k agh burzum-ishi krimpatul.
  * @author Leyluchy
  *
  */
@@ -15,7 +16,7 @@ public class Controlador {
 	private ArrayList<Archivo> archivos;
 	private ArrayList<Clase> clases;
 	
-	public void procesar(File directorio){
+	public void procesar(File directorio) throws FileNotFoundException{
 		archivos = new ArrayList<Archivo>();
 		clases = new ArrayList<Clase>();
 		
