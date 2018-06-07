@@ -16,6 +16,7 @@ public class Archivo {
 	private CompilationUnit arbol;
 	private String nombre;
 	private ArrayList<String> lineas;
+	private int cantComentarios;
 	
 	
 	public Archivo(File archivo) throws FileNotFoundException {
@@ -30,6 +31,9 @@ public class Archivo {
 		lineas=new ArrayList<String>();
 		calcularLineas(archivo);
 		calcularLineasTotales();
+		this.cantComentarios=0;
+		contarComentariosDobleBarra();
+		contarComentariosMultiLinea();
 		calcularPorcentajeComentarios();
 	}
 
@@ -61,6 +65,15 @@ public class Archivo {
 		return porcentajeComentarios;
 	}
 
+	private void contarComentariosDobleBarra() {
+		
+		
+	}
+	
+	private void contarComentariosMultiLinea() {
+		
+	}
+	
 	private void calcularPorcentajeComentarios() {
 		
 	}
