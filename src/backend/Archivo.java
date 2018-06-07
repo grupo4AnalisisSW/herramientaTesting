@@ -65,13 +65,22 @@ public class Archivo {
 		return porcentajeComentarios;
 	}
 
-	private void contarComentariosDobleBarra() {
-		
+	/**
+	 * 
+	 * Este Ya funka, falta el otro, por ahí cuando haga el otro tenga que ajustar este
+	 */
+	private void contarComentariosDobleBarra() { //Revisa por linea de comentario, si aparece este tipo de comentario
+		for(String linea:this.lineas) {
+			linea=linea.replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText");
+			if(linea.contains("\\\\"))
+				this.cantComentarios++;
+		}
 		
 	}
 	
 	private void contarComentariosMultiLinea() {
 		
+		//while()
 	}
 	
 	private void calcularPorcentajeComentarios() {
