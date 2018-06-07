@@ -1,7 +1,9 @@
 package backend;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
+import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
 public class Archivo {
@@ -14,7 +16,12 @@ public class Archivo {
 	public Archivo(File archivo) {
 		//Abrir archivo, crear arbol, lo que haga falta
 		this.nombre = archivo.getName();
-		
+		try {
+			this.arbol = JavaParser.parse(archivo);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		calcularLineasTotales();
 		calcularPorcentajeComentarios();
 	}
