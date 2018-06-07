@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.DoStmt;
 import com.github.javaparser.ast.stmt.ForStmt;
@@ -14,6 +15,7 @@ import com.github.javaparser.ast.stmt.SwitchEntryStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.sun.javafx.fxml.expression.BinaryExpression;
 
 import soporteJavaParser.NodeIterator;
 
@@ -58,11 +60,13 @@ public class Metodo {
 		complejidadCiclomatica = 1;
 		
 		new VoidVisitorAdapter<Object>() {
-			//Contar ifs
+			//Contar ifs, AND y OR
             @Override
             public void visit(IfStmt n, Object arg) {
                 super.visit(n, arg);
                 complejidadCiclomatica++;
+                if(n.getCondition() instanceof BinaryExpr) 
+                	contarAndYOr((BinaryExpr)n.getCondition());
             }
             
             //Contar cases, que son Entries del Switch con Labels (sin Label es Default, que no cuenta)
@@ -87,18 +91,22 @@ public class Metodo {
                 complejidadCiclomatica++;
             }
             
-            //Contar whiles. No incluye do-while.
+            //Contar whiles, AND y OR. No incluye do-while.
             @Override
             public void visit(WhileStmt n, Object arg) {
                 super.visit(n, arg);
                 complejidadCiclomatica++;
+                if(n.getCondition() instanceof BinaryExpr) 
+                	contarAndYOr((BinaryExpr)n.getCondition());
             }
             
-            //Contar do-while
+            //Contar do-while, AND y OR
             @Override
             public void visit(DoStmt n, Object arg) {
                 super.visit(n, arg);
                 complejidadCiclomatica++;
+                if(n.getCondition() instanceof BinaryExpr) 
+                	contarAndYOr((BinaryExpr)n.getCondition());
             }
             
             //Contar fors
@@ -115,6 +123,19 @@ public class Metodo {
                 complejidadCiclomatica++;
             }
         }.visit(nodo, null);
+	}
+	
+	/**
+	 * Cuenta los AND y OR en una expresion
+	 * @param cond
+	 */
+	private void contarAndYOr(BinaryExpr cond) {
+		if(cond.getOperator().equals(BinaryExpr.Operator.AND) || cond.getOperator().equals(BinaryExpr.Operator.OR))
+			complejidadCiclomatica++;
+		if(cond.getRight() instanceof BinaryExpr)
+			contarAndYOr((BinaryExpr)cond.getRight());
+		if(cond.getLeft() instanceof BinaryExpr)
+			contarAndYOr((BinaryExpr)cond.getLeft());
 	}
 
 	public String getNombre() {
