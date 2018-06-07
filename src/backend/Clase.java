@@ -14,17 +14,13 @@ public class Clase {
 	public Clase(ClassOrInterfaceDeclaration nodo) {
 		this.nodo = nodo;
 		this.setNombre(nodo.getNameAsString());
+		this.metodos = new ArrayList<Metodo>();
 		for(MethodDeclaration metodo : nodo.getMethods())
 			metodos.add(new Metodo(metodo));
 	}
 
 	public ArrayList<Metodo> getMetodos() {
 		return metodos;
-	}
-
-	//Ver si esta es necesaria o no
-	public void setMetodos(ArrayList<Metodo> metodos) {
-		this.metodos = metodos;
 	}
 
 	public String getNombre() {

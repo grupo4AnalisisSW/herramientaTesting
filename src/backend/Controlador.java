@@ -73,8 +73,9 @@ public class Controlador {
 	/**
 	 * Crea la lista de Archivos levantando todos los .java de un directorio
 	 * @param directorio
+	 * @throws FileNotFoundException 
 	 */
-	private void abrirYParsearArchivos(File directorio) {
+	private void abrirYParsearArchivos(File directorio) throws FileNotFoundException {
 		levantarArchivos(directorio, ".java");
 	}
 
@@ -83,8 +84,9 @@ public class Controlador {
 	 * Por cada .java agrega un Archivo a la lista
 	 * @param f: archivo o directorio tipo File
 	 * @param ext: extension de los archivos que queremos levantar
+	 * @throws FileNotFoundException 
 	 */
-	private void levantarArchivos(File f,String ext) {
+	private void levantarArchivos(File f,String ext) throws FileNotFoundException {
 		if (f.isDirectory()) 
 			for (File arch: f.listFiles()) 
 				levantarArchivos(arch,ext);
