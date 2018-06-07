@@ -3,6 +3,9 @@ package backend;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
 /**
  * Ash Nazg durbatulûk, ash Nazg gimbatul, ash Nazg thrakatulûk agh burzum-ishi krimpatul.
  * @author Leyluchy
@@ -21,10 +24,13 @@ public class Controlador {
 		 */
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
+		
+		//Estas podrian ser procesarMetodos()
 		calcularFans();
-		calcularComplejidadesCiclomaticas();
-		calcularLongitudes();
-		calcularVolumenes();
+		//Estas 3 podrian estar dentro de Metodo
+		//calcularComplejidadesCiclomaticas();
+		//calcularLongitudes();
+		//calcularVolumenes();
 	}
 
 	private void calcularVolumenes() {
@@ -47,17 +53,36 @@ public class Controlador {
 		
 	}
 
+	/**
+	 * Genera la lista de Clases a partir de los Archivos.
+	 * Cada clase genera su lista de Metodos.
+	 */
 	private void armarClasesYMetodos() {
-		// TODO Auto-generated method stub
-		
+		for(Archivo arch : archivos) {
+			new VoidVisitorAdapter<Object>() {
+                @Override
+                public void visit(ClassOrInterfaceDeclaration n, Object arg) {
+                    super.visit(n, arg);
+                    clases.add(new Clase(n));
+                }
+            }.visit(arch.getArbol(), null);
+		}
 	}
 
+	/**
+	 * Crea la lista de Archivos levantando todos los .java de un directorio
+	 * @param directorio
+	 */
 	private void abrirYParsearArchivos(File directorio) {
 		levantarArchivos(directorio, ".java");
 	}
-	
 
-
+	/**
+	 * Funcion recursiva para recorrer directorios buscando .java
+	 * Por cada .java agrega un Archivo a la lista
+	 * @param f: archivo o directorio tipo File
+	 * @param ext: extension de los archivos que queremos levantar
+	 */
 	private void levantarArchivos(File f,String ext) {
 		if (f.isDirectory()) 
 			for (File arch: f.listFiles()) 

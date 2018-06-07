@@ -1,5 +1,7 @@
 package backend;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
+
 public class Metodo {
 
 	private String nombre;
@@ -8,11 +10,36 @@ public class Metodo {
 	private int longitud;
 	private int volumen;
 	private int complejidadCiclomatica;
+	private MethodDeclaration nodo;
 	
-	public Metodo(String nombre) {
-		this.setNombre(nombre);
+	public Metodo(MethodDeclaration nodo) {
+		this.nodo = nodo;
+		this.setNombre(nodo.getNameAsString());
 	}
 	
+	/**
+	 * Calcula complejidad ciclomatica, longitud y volumen
+	 * Fan In y Fan Out deben calcularse a parte
+	 */
+	public void procesar() {
+		calcularComplejidadCiclomatica();
+		calcularLongitud();
+		calcularVolumen();
+	}
+	
+	private void calcularVolumen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void calcularLongitud() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void calcularComplejidadCiclomatica() {
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
