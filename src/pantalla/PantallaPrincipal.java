@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -119,7 +120,12 @@ public class PantallaPrincipal extends JFrame {
 				js.setFileSelectionMode(js.DIRECTORIES_ONLY);
 				int result = js.showOpenDialog(null);
 				if (result==js.APPROVE_OPTION) {
-					elControlador.procesar(js.getSelectedFile());
+					try {
+						elControlador.procesar(js.getSelectedFile());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();//Poner algo acá
+					}
 					for(Archivo arch : elControlador.getArchivos())
 						listArchivos.add(arch.getNombre());
 					/*

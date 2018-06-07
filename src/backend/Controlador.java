@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ public class Controlador {
 	private ArrayList<Archivo> archivos;
 	private ArrayList<Clase> clases;
 	
-	public void procesar(File directorio){
+	public void procesar(File directorio) throws FileNotFoundException{
 		archivos = new ArrayList<Archivo>();
 		clases = new ArrayList<Clase>();
 		
@@ -52,13 +53,13 @@ public class Controlador {
 		
 	}
 
-	private void abrirYParsearArchivos(File directorio) {
+	private void abrirYParsearArchivos(File directorio) throws FileNotFoundException {
 		levantarArchivos(directorio, ".java");
 	}
 	
 
 
-	private void levantarArchivos(File f,String ext) {
+	private void levantarArchivos(File f,String ext) throws FileNotFoundException {
 		if (f.isDirectory()) 
 			for (File arch: f.listFiles()) 
 				levantarArchivos(arch,ext);
