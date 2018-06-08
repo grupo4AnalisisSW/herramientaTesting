@@ -129,16 +129,20 @@ public class PantallaPrincipal extends JFrame {
 		listMetodos.setValueIsAdjusting(true);
 		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JList<String> listClases = new JList<String>(new DefaultListModel<String>());
-		listClases.setValueIsAdjusting(true);
-		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		contentPane.add(listClases);
 		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
+		listArchivos.setValueIsAdjusting(true);
+		listArchivos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		//ScrollPanes
 		JScrollPane metScroll = new JScrollPane(listMetodos);
 		metScroll.setBounds(397, 267, 369, 135);
 		contentPane.add(metScroll);
 		JScrollPane claScroll = new JScrollPane(listClases);
-		claScroll.setBounds(10, 407, 296, -108);
+		claScroll.setBounds(10, 267, 362, 135);
 		contentPane.add(claScroll);
+		JScrollPane filScroll = new JScrollPane(listArchivos);
+		filScroll.setBounds(10, 82, 362, 120);
+		contentPane.add(filScroll);
 		
 		//Lista de metodos
 		listMetodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -157,20 +161,6 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
-		//contentPane.add(listMetodos);
-		
-		//Lista de clases
-		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listClases.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				//Que hacer cuando clickean una clase
-				//Listar los metodos de esa clase
-				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
-				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
-					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
-			}
-		});
 		/*
 		listClases.addMouseListener(new MouseAdapter() {
 			@Override
@@ -183,7 +173,6 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		*/
-		listClases.setBounds(10, 267, 362, 135);
 		//contentPane.add(listClases);
 		
 		//Lista de archivos
@@ -231,8 +220,26 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		*/
+		
+		listClases.setValueIsAdjusting(true);
+		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//contentPane.add(listMetodos);
+		
+		//Lista de clases
+		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listClases.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				//Que hacer cuando clickean una clase
+				//Listar los metodos de esa clase
+				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
+				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
+					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
+			}
+		});
+		listClases.setBounds(1, 1, 202, 56);
 		listArchivos.setBounds(6, 77, 362, 130);
-		contentPane.add(listArchivos);
+		//contentPane.add(listArchivos);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir directorio");
 		mntmAbrir.addActionListener(new ActionListener() {
