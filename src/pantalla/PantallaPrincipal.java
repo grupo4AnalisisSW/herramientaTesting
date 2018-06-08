@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
@@ -25,6 +27,7 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -118,17 +121,18 @@ public class PantallaPrincipal extends JFrame {
 		contentPane.add(lblvol);
 		
 		//Listas
-		List listMetodos = new List();
-		List listClases = new List();
-		List listArchivos = new List();
+		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
+		JList<String> listClases = new JList<String>(new DefaultListModel<String>());	
+		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
 		
 		//Lista de metodos
-		listMetodos.addMouseListener(new MouseAdapter() {
+		listMetodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listMetodos.addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void valueChanged(ListSelectionEvent e) {
 				//Que hacer cuando clickean un metodo
-				String clase = listClases.getSelectedItem();
-				String metodo = listMetodos.getSelectedItem();
+				String clase = listClases.getSelectedValue();
+				String metodo = listMetodos.getSelectedValue();
 				elControlador.procesarMetodo(clase, metodo);
 				
 				lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
@@ -141,29 +145,42 @@ public class PantallaPrincipal extends JFrame {
 		contentPane.add(listMetodos);
 		
 		//Lista de clases
+		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listClases.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				//Que hacer cuando clickean una clase
+				//Listar los metodos de esa clase
+				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
+				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
+					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
+			}
+		});
+		/*
 		listClases.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				//Que hacer cuando clickean una clase
 				//Listar los metodos de esa clase
 				listMetodos.removeAll();
-				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedItem()))
-					listMetodos.add(nombreMetodo);
+				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
+					((DefaultListModel) listMetodos.getModel()).addElement(nombreMetodo);
 			}
 		});
+		*/
 		listClases.setBounds(10, 267, 362, 135);
 		contentPane.add(listClases);
 		
 		//Lista de archivos
-		listArchivos.addMouseListener(new MouseAdapter() {
+		listArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listArchivos.addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void valueChanged(ListSelectionEvent e) {
 				//Que hacer cuando clickean un archivo
 				//Mostrar datos de ese archivo
-				
 				locsLabel.setText( Integer.toString(
 						elControlador.traerLineasArch(
-								listArchivos.getSelectedItem() )
+								listArchivos.getSelectedValue() )
 						));
 				/* Descomentar esta linea cuando esten implementados los % de comentarios
 				 * 
@@ -175,6 +192,30 @@ public class PantallaPrincipal extends JFrame {
 				 */
 			}
 		});
+		/*
+		listArchivos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//Que hacer cuando clickean un archivo
+				//Mostrar datos de ese archivo
+				
+				locsLabel.setText( Integer.toString(
+						elControlador.traerLineasArch(
+								listArchivos.getSelectedValue() )
+						));
+						*/
+				/* Descomentar esta linea cuando esten implementados los % de comentarios
+				 * 
+				 * 
+				porcentajeComentLabel.setText(Double.toString(
+						elControlador.traerPorcentajeComent(
+							listArchivos.getSelectedItem()
+						) * 100) + "%" );
+				 */
+		/*
+			}
+		});
+		*/
 		listArchivos.setBounds(6, 77, 362, 130);
 		contentPane.add(listArchivos);
 		
@@ -191,12 +232,12 @@ public class PantallaPrincipal extends JFrame {
 						elControlador.procesar(js.getSelectedFile());
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();//Poner algo acá
+						e.printStackTrace();//Poner algo acï¿½					
 					}
 					for(String arch : elControlador.traerArchivos())
-						listArchivos.add(arch);
+						((DefaultListModel<String>) listArchivos.getModel()).addElement(arch);
 					for(String clase : elControlador.traerClases())
-						listClases.add(clase);
+						((DefaultListModel<String>) listClases.getModel()).addElement(clase);
 				}
 			}
 
