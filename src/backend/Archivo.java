@@ -2,6 +2,8 @@ package backend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -15,6 +17,7 @@ public class Archivo {
 	private double porcentajeComentarios = -1;
 	private CompilationUnit arbol;
 	private String nombre;
+	private String codigo;
 	private ArrayList<String> lineas;
 	private int cantComentarios;
 	
@@ -28,6 +31,11 @@ public class Archivo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();//IDK
 		}
+		try {
+            this.codigo = new String(Files.readAllBytes(archivo.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		lineas=new ArrayList<String>();
 		calcularLineas(archivo);
 		calcularLineasTotales();
@@ -93,6 +101,14 @@ public class Archivo {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 	
 }
