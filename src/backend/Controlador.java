@@ -47,7 +47,7 @@ public class Controlador {
 			for (Metodo metodo : clase.getMetodos().values()) {
 				metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
 						+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
-				metodo.setFanOut(calcularFanOut(metodo));
+				metodo.setFanOut(calcularFanOut(metodo,clases.values()));
 			}
 		}
 	}
@@ -90,14 +90,24 @@ public class Controlador {
 	 * Calcula los fan out de cada m�todo si los llama sin un punto adelante
 	 * */
 
-	public static int calcularFanOut(Metodo metodo) {
+	public static int calcularFanOut(Metodo metodo, Collection<Clase> clases) {
 	int contador = 0;
 	String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
   
 	Pattern pat = Pattern.compile(regex);
 	Matcher mat = pat.matcher(metodo.getCuerpo());
-	while(mat.find())
-		contador++;
+	while(mat.find()) {
+		for (Clase clase : clases) {
+			for (Metodo metod : clase.getMetodos().values()) {
+				if(mat.toString().contains(metod.getNombre()))
+				{
+//					System.out.println("Mat: " + mat.toString());
+//					System.out.println("Metodo: " + metod.getNombre());
+					contador++;
+				}
+			}
+		}
+	}
 	return contador;
 	}
 
