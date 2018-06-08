@@ -1,8 +1,5 @@
 package backend;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -18,7 +15,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class Metodo {
 
 	private String nombre;
-	private static String cuerpo;
+	private String cuerpo;
 	private int fanIn = -1;
 	private int fanOut = -1;
 	private int longitud = -1;
@@ -30,8 +27,9 @@ public class Metodo {
 		this.nodo = nodo;
 		this.setNombre(nodo.getNameAsString());
 		
-		String declaracion = nodo.getDeclarationAsString().replaceAll("/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/", "").replaceAll("//.*[\n\r]", "").replaceAll("^\\s*\n", "");
-        this.setCuerpo("");
+		String declaracion = nodo.getBody().toString().replaceAll("/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/", "").replaceAll("//.*[\n\r]", "").replaceAll("^\\s*\n", "");
+        
+		this.setCuerpo("");
         String[] body = declaracion.split("\\n");
         for (int i = 0; i < body.length; i++) {
             if (i != 0 && i != body.length - 1)
@@ -171,11 +169,11 @@ public class Metodo {
 		return complejidadCiclomatica;
 	}
 
-	public static String getCuerpo() {
+	public String getCuerpo() {
 		return cuerpo;
 	}
 
 	public void setCuerpo(String cuerpo) {
-		Metodo.cuerpo = cuerpo;
+		this.cuerpo = cuerpo;
 	}
 }
