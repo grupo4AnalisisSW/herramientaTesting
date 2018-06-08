@@ -52,6 +52,7 @@ public class Archivo {
 		}
 		int i=0;
 		while(i<this.lineas.size()) {
+			this.lineas.set(i, lineas.get(i).trim());//this.lineas.set(i, tabTrim(lineas.get(i)))
 			if(this.lineas.get(i).equals("")) {
 				this.lineas.remove(i);
 			}
@@ -110,5 +111,13 @@ public class Archivo {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
+
+	/*private String tabTrim(String linea) {
+		String newLinea=new String(linea.trim());
+		while(newLinea.endsWith("\t")) {
+			newLinea = newLinea.substring(0, newLinea.length()-1);
+		}
+		return newLinea;
+	}*/
 	
 }
