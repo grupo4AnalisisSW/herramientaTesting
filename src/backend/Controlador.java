@@ -19,7 +19,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
  */
 public class Controlador {
 	
-	private static final  String REGEX_METODO = "([a-zA-Z_][\\w\\<\\>]*)";
+	private static final  String REGEX_METODO = "([a-zA-Z_][\\w]*)";
 	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
