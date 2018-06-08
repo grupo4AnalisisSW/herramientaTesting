@@ -234,6 +234,15 @@ public class PantallaPrincipal extends JFrame {
 						// TODO Auto-generated catch block
 						e.printStackTrace();//Poner algo ac�					
 					}
+					locsLabel.setText("[Cant Lineas]");
+					porcentajeComentLabel.setText("[Cant Lineas]%");
+					lblfanIn.setText("[FAN IN]");
+					lblfanOut.setText("[FAN OUT]");
+					lbllong.setText("[LONG]");
+					lblvol.setText("[LONG]");
+					listArchivos.removeAll();
+					listClases.removeAll();
+					listMetodos.removeAll();
 					for(String arch : elControlador.traerArchivos())
 						((DefaultListModel<String>) listArchivos.getModel()).addElement(arch);
 					for(String clase : elControlador.traerClases())
@@ -242,6 +251,7 @@ public class PantallaPrincipal extends JFrame {
 			}
 
 		});
+		
 		mnArchivo.add(mntmAbrir);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
