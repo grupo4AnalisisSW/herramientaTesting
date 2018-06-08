@@ -199,7 +199,7 @@ public class Controlador {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getLongitud();
 	}
 	
-	public int traerVolumen(String nombreClase, String nombreMetodo) {
+	public double traerVolumen(String nombreClase, String nombreMetodo) {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getVolumen();
 	}
 	

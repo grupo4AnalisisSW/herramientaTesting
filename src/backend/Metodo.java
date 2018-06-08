@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,16 +17,20 @@ import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+//import herramienta.Token;
+
 public class Metodo {
 
 	private String nombre;
-	private static String cuerpo;
+	private static String cuerpo; //Codigo
 	private int fanIn = -1;
 	private int fanOut = -1;
 	private int longitud = -1;
-	private int volumen = -1;
+	private double volumen = -1;
 	private int complejidadCiclomatica = -1;
 	private MethodDeclaration nodo;
+	private ArrayList<Token> operadores;
+	private ArrayList<Token> operandos;
 	
 	public Metodo(MethodDeclaration nodo) {
 		this.nodo = nodo;
@@ -45,18 +51,16 @@ public class Metodo {
 	 */
 	public void procesar() {
 		calcularComplejidadCiclomatica();
-		calcularLongitud();
-		calcularVolumen();
+		calcularHalstead();
 	}
 	
-	private void calcularVolumen() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void calcularLongitud() {
-		// TODO Auto-generated method stub
-		
+	private void calcularHalstead() {
+		operadores = new ArrayList<Token>();
+		operandos = new ArrayList<Token>();
+		operadores.addAll(Halstead.extraerTokens(cuerpo, Token.OPERADOR));
+		operandos.addAll(Halstead.extraerTokens(cuerpo, Token.OPERANDO));
+		longitud = Halstead.calcularLongitud(operadores, operandos);
+		volumen = Halstead.calcularVolumen(operadores, operandos, longitud);
 	}
 
 	private void calcularComplejidadCiclomatica() {
@@ -164,7 +168,7 @@ public class Metodo {
 	public int getLongitud() {
 		return longitud;
 	}
-	public int getVolumen() {
+	public double getVolumen() {
 		return volumen;
 	}
 	public int getComplejidadCiclomatica() {

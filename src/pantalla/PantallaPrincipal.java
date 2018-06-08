@@ -173,7 +173,7 @@ public class PantallaPrincipal extends JFrame {
 					lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
 					lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
 					lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
-					lblvol.setText(Integer.toString(elControlador.traerVolumen(clase, metodo)));
+					lblvol.setText(Double.toString(elControlador.traerVolumen(clase, metodo)));
 					lblvg.setText(Integer.toString(elControlador.traerVg(clase, metodo)));
 				}
 			}
