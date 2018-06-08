@@ -23,12 +23,13 @@ public class Controlador {
 	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
-	
-	public void procesar(File directorio) throws FileNotFoundException{
-		//Si ya habia procesado antes, cuelgo los hash maps anteriores y empiezo de vuelta
+
+	public Controlador() {
 		archivos = new HashMap<String, Archivo>();
 		clases = new HashMap<String, Clase>();
-		
+	}
+	
+	public void procesar(File directorio) throws FileNotFoundException{
 		//Procesamiento
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
@@ -40,14 +41,12 @@ public class Controlador {
 	 * usando su lista de métodos.
 	 * */
 	private void calcularFans() {
-		for (Archivo archivo : archivos.values()) {
-			for (Clase clase : clases.values()) {
-				for (Metodo metodo : clase.getMetodos().values()) {
-					metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
-							+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
-					metodo.setFanOut(calcularFanOutLlamaSinPunto(metodo)
-							+ calcularFanOutLlamaConPunto(metodo));
-				}
+		for (Clase clase : clases.values()) {
+			for (Metodo metodo : clase.getMetodos().values()) {
+				metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
+						+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
+				metodo.setFanOut(calcularFanOutLlamaSinPunto(metodo)
+						+ calcularFanOutLlamaConPunto(metodo));
 			}
 		}
 	}

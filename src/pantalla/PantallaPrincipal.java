@@ -69,7 +69,7 @@ public class PantallaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public PantallaPrincipal() {
-		elControlador = new Controlador();
+		//elControlador = new Controlador();
 		
 		setTitle("Herramienta de Testing");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,13 +126,13 @@ public class PantallaPrincipal extends JFrame {
 		
 		//Listas
 		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
-		listMetodos.setValueIsAdjusting(true);
-		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//listMetodos.setValueIsAdjusting(true);
+		contentPane.add(listMetodos);
 		JList<String> listClases = new JList<String>(new DefaultListModel<String>());
 		contentPane.add(listClases);
 		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
-		listArchivos.setValueIsAdjusting(true);
-		listArchivos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//listArchivos.setValueIsAdjusting(true);
+		
 		//ScrollPanes
 		JScrollPane metScroll = new JScrollPane(listMetodos);
 		metScroll.setBounds(397, 267, 369, 135);
@@ -172,7 +172,8 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
-		contentPane.add(listMetodos);
+		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//contentPane.add(listMetodos);
 		
 		//Lista de clases
 		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -198,19 +199,10 @@ public class PantallaPrincipal extends JFrame {
 				}
 			}
 		});
-		/*
-		listClases.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//Que hacer cuando clickean una clase
-				//Listar los metodos de esa clase
-				listMetodos.removeAll();
-				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
-					((DefaultListModel) listMetodos.getModel()).addElement(nombreMetodo);
-			}
-		});
-		*/
+		listClases.setBounds(1, 1, 202, 56);
+		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		//contentPane.add(listClases);
+		//listClases.setValueIsAdjusting(true);
 		
 		//Lista de archivos
 		listArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -243,48 +235,7 @@ public class PantallaPrincipal extends JFrame {
 				}
 			}
 		});
-		/*
-		listArchivos.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//Que hacer cuando clickean un archivo
-				//Mostrar datos de ese archivo
-				
-				locsLabel.setText( Integer.toString(
-						elControlador.traerLineasArch(
-								listArchivos.getSelectedValue() )
-						));
-						*/
-				/* Descomentar esta linea cuando esten implementados los % de comentarios
-				 * 
-				 * 
-				porcentajeComentLabel.setText(Double.toString(
-						elControlador.traerPorcentajeComent(
-							listArchivos.getSelectedItem()
-						) * 100) + "%" );
-				 */
-		/*
-			}
-		});
-		*/
-		
-		listClases.setValueIsAdjusting(true);
-		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		//contentPane.add(listMetodos);
-		
-		//Lista de clases
-		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listClases.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				//Que hacer cuando clickean una clase
-				//Listar los metodos de esa clase
-				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
-				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
-					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
-			}
-		});
-		listClases.setBounds(1, 1, 202, 56);
+		listArchivos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		listArchivos.setBounds(6, 77, 362, 130);
 		//contentPane.add(listArchivos);
 		
@@ -298,6 +249,7 @@ public class PantallaPrincipal extends JFrame {
 				int result = js.showOpenDialog(null);
 				if (result==js.APPROVE_OPTION) {
 					//Proceso el nuevo directorio
+					elControlador = new Controlador();
 					try {
 						elControlador.procesar(js.getSelectedFile());
 					} catch (FileNotFoundException e) {
@@ -314,11 +266,11 @@ public class PantallaPrincipal extends JFrame {
 					lblvol.setText("[LONG]");
 					
 					//Reseteo listas
-					listArchivos.removeAll();
+					((DefaultListModel<String>) listArchivos.getModel()).removeAllElements();
 					listArchivos.clearSelection();
-					listClases.removeAll();
+					((DefaultListModel<String>) listClases.getModel()).removeAllElements();
 					listClases.clearSelection();
-					listMetodos.removeAll();
+					((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
 					listMetodos.clearSelection();
 					
 					//Relleno listas
