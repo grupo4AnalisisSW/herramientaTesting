@@ -256,12 +256,7 @@ public class PantallaPrincipal extends JFrame {
 				if (result==JFileChooser.APPROVE_OPTION) {
 					//Proceso el nuevo directorio
 					elControlador = new Controlador();
-					try {
-						elControlador.procesar(js.getSelectedFile());
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();//Poner algo ac�					
-					}
+					elControlador.procesar(js.getSelectedFile());
 					
 					//Reseteo labels
 					locsLabel.setText("[Cant Lineas]");

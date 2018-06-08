@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ast.CompilationUnit;
 
 import java.util.ArrayList;
@@ -22,24 +23,17 @@ public class Archivo {
 	private int cantComentarios;
 	
 	
-	public Archivo(File archivo) throws FileNotFoundException {
+	public Archivo(File archivo) throws IOException, ParseProblemException {
 		//Abrir archivo, crear arbol, lo que haga falta
 		this.nombre = archivo.getName();
-		try {
-			this.arbol = JavaParser.parse(archivo);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();//IDK
-		}
-		try {
-            this.codigo = new String(Files.readAllBytes(archivo.toPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		lineas=new ArrayList<String>();
+		this.arbol = JavaParser.parse(archivo);
+        this.codigo = new String(Files.readAllBytes(archivo.toPath()));
+        
+		lineas = new ArrayList<String>();
 		calcularLineas(archivo);
 		calcularLineasTotales();
-		this.cantComentarios=0;
+		
+		this.cantComentarios = 0;
 		int i=0;
 		while(i<this.lineas.size()) {
 			lineas.set(i, lineas.get(i).replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText"));

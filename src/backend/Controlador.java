@@ -2,6 +2,7 @@ package backend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
@@ -29,7 +31,7 @@ public class Controlador {
 		clases = new HashMap<String, Clase>();
 	}
 	
-	public void procesar(File directorio) throws FileNotFoundException{
+	public void procesar(File directorio) {
 		//Procesamiento
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
@@ -152,7 +154,7 @@ public class Controlador {
 	 * @param directorio
 	 * @throws FileNotFoundException 
 	 */
-	private void abrirYParsearArchivos(File directorio) throws FileNotFoundException {
+	private void abrirYParsearArchivos(File directorio) {
 		levantarArchivos(directorio, ".java");
 	}
 
@@ -163,14 +165,25 @@ public class Controlador {
 	 * @param ext: extension de los archivos que queremos levantar
 	 * @throws FileNotFoundException 
 	 */
-	private void levantarArchivos(File f,String ext) throws FileNotFoundException {
+	private void levantarArchivos(File f,String ext) {
 		if (f.isDirectory()) 
 			for (File arch: f.listFiles()) 
 				levantarArchivos(arch,ext);
 		else
 			if (f.getName().endsWith(ext)) {
-				Archivo arch = new Archivo(f);
-				archivos.put(arch.getNombre(), arch);
+				Archivo arch;
+				try {
+					arch = new Archivo(f);
+					archivos.put(arch.getNombre(), arch);
+				} catch (ParseProblemException | IOException e) {
+					if(e instanceof FileNotFoundException)
+						System.out.print("No se encontró");
+					else if(e instanceof IOException)
+						System.out.print("No se pudo abrir");
+					else if(e instanceof ParseProblemException)
+						System.out.print("No se pudo parsear");
+					System.out.println(" el archivo " + f.getName());
+				}
 			}
 	}
 	
