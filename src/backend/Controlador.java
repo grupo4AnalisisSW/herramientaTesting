@@ -22,6 +22,7 @@ public class Controlador {
 	private HashMap<String, Clase> clases;
 	
 	public void procesar(File directorio) throws FileNotFoundException{
+		//Si ya habia procesado antes, cuelgo los hash maps anteriores y empiezo de vuelta
 		archivos = new HashMap<String, Archivo>();
 		clases = new HashMap<String, Clase>();
 		
@@ -134,7 +135,9 @@ public class Controlador {
 	}
 
 	public int traerLineasArch(String nombreArchivo) {
-		return archivos.get(nombreArchivo).getLineasTotales();
+		return archivos.
+				get(nombreArchivo).
+				getLineasTotales();
 	}
 
 	public double traerPorcentajeComent(String nombreArchivo) {

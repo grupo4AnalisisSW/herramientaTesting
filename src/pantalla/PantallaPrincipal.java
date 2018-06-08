@@ -131,14 +131,25 @@ public class PantallaPrincipal extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				//Que hacer cuando clickean un metodo
-				String clase = listClases.getSelectedValue();
-				String metodo = listMetodos.getSelectedValue();
-				elControlador.procesarMetodo(clase, metodo);
 				
-				lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
-				lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
-				lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
-				lblvol.setText(Integer.toString(elControlador.traerVolumen(clase, metodo)));
+				//Si la seleccion todavia esta cambiando, la ignoro
+				//Solo cuando quedo quieta ejecuto
+				if(!e.getValueIsAdjusting()) {
+					//Si no hay nada seleccionado, no hacer nada
+					if(listMetodos.isSelectionEmpty())
+						return;
+					
+					//Si hay algo seleccionado, buscar datos de ese metodo
+					String clase = listClases.getSelectedValue();
+					String metodo = listMetodos.getSelectedValue();
+					elControlador.procesarMetodo(clase, metodo);
+					
+					//Rellenar labels
+					lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
+					lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
+					lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
+					lblvol.setText(Integer.toString(elControlador.traerVolumen(clase, metodo)));
+				}
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
@@ -150,10 +161,22 @@ public class PantallaPrincipal extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				//Que hacer cuando clickean una clase
-				//Listar los metodos de esa clase
-				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
-				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
-					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
+				
+				//Si la seleccion todavia esta cambiando, la ignoro
+				//Solo cuando quedo quieta ejecuto
+				if(!e.getValueIsAdjusting()) {
+					//Primero, limpiar lista de metodos
+					listMetodos.clearSelection();
+					((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
+					
+					//Si lo que paso es que saque la seleccion, listo
+					if(listClases.isSelectionEmpty())
+						return;
+					
+					//Sino, listar los metodos de la clase seleccionada
+					for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
+						((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
+				}
 			}
 		});
 		/*
@@ -177,19 +200,29 @@ public class PantallaPrincipal extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				//Que hacer cuando clickean un archivo
-				//Mostrar datos de ese archivo
-				locsLabel.setText( Integer.toString(
-						elControlador.traerLineasArch(
-								listArchivos.getSelectedValue() )
-						));
-				/* Descomentar esta linea cuando esten implementados los % de comentarios
-				 * 
-				 * 
-				porcentajeComentLabel.setText(Double.toString(
-						elControlador.traerPorcentajeComent(
-							listArchivos.getSelectedItem()
-						) * 100) + "%" );
-				 */
+				
+				//Si la seleccion todavia esta cambiando, la ignoro
+				//Solo cuando quedo quieta ejecuto
+				if(!e.getValueIsAdjusting()) {
+					//Si no hay nada seleccionado, no hacer nada
+					if(listArchivos.isSelectionEmpty())
+						return;
+					
+					//Mostrar datos de ese archivo
+					locsLabel.setText( Integer.toString(
+							elControlador.traerLineasArch(
+									listArchivos.getSelectedValue() )
+							));
+					
+					/* Descomentar esta linea cuando esten implementados los % de comentarios
+					 * 
+					 * 
+					porcentajeComentLabel.setText(Double.toString(
+							elControlador.traerPorcentajeComent(
+								listArchivos.getSelectedItem()
+							) * 100) + "%" );
+					 */
+				}
 			}
 		});
 		/*
@@ -228,21 +261,31 @@ public class PantallaPrincipal extends JFrame {
 				js.setFileSelectionMode(js.DIRECTORIES_ONLY);
 				int result = js.showOpenDialog(null);
 				if (result==js.APPROVE_OPTION) {
+					//Proceso el nuevo directorio
 					try {
 						elControlador.procesar(js.getSelectedFile());
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();//Poner algo ac�					
 					}
+					
+					//Reseteo labels
 					locsLabel.setText("[Cant Lineas]");
 					porcentajeComentLabel.setText("[Cant Lineas]%");
 					lblfanIn.setText("[FAN IN]");
 					lblfanOut.setText("[FAN OUT]");
 					lbllong.setText("[LONG]");
 					lblvol.setText("[LONG]");
+					
+					//Reseteo listas
 					listArchivos.removeAll();
+					listArchivos.clearSelection();
 					listClases.removeAll();
+					listClases.clearSelection();
 					listMetodos.removeAll();
+					listMetodos.clearSelection();
+					
+					//Relleno listas
 					for(String arch : elControlador.traerArchivos())
 						((DefaultListModel<String>) listArchivos.getModel()).addElement(arch);
 					for(String clase : elControlador.traerClases())
