@@ -23,11 +23,13 @@ public class Controlador {
 	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
-	
-	public void procesar(File directorio) throws FileNotFoundException{
+
+	public Controlador() {
 		archivos = new HashMap<String, Archivo>();
 		clases = new HashMap<String, Clase>();
-		
+	}
+	
+	public void procesar(File directorio) throws FileNotFoundException{
 		//Procesamiento
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
@@ -35,11 +37,10 @@ public class Controlador {
 	}
 
 	/**
-	 * Calcula los fan in de todos los métodos de cada clase
-	 * usando su lista de métodos.
+	 * Calcula los fan in de todos los mï¿½todos de cada clase
+	 * usando su lista de mï¿½todos.
 	 * */
 	private void calcularFans() {
-		for (Archivo archivo : archivos.values()) {
 			for (Clase clase : clases.values()) {
 				for (Metodo metodo : clase.getMetodos().values()) {
 					metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
@@ -48,7 +49,6 @@ public class Controlador {
 							+ calcularFanOutLlamaConPunto(metodo));
 				}
 			}
-		}
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class Controlador {
     }
 	
 	/**
-	 * Calcula los fan out de cada método si los llama sin un punto adelante
+	 * Calcula los fan out de cada mï¿½todo si los llama sin un punto adelante
 	 * */
 	private static int calcularFanOutLlamaSinPunto(Metodo metodo) {
         int contador = 0;
@@ -99,7 +99,7 @@ public class Controlador {
     }
 	
 	/**
-	 * Calcula los fan out de cada método si los llama conn un punto adelante
+	 * Calcula los fan out de cada mï¿½todo si los llama conn un punto adelante
 	 * */
 	private static int calcularFanOutLlamaConPunto(Metodo metodo) {
         int contador = 0;
@@ -188,7 +188,9 @@ public class Controlador {
 	}
 
 	public int traerLineasArch(String nombreArchivo) {
-		return archivos.get(nombreArchivo).getLineasTotales();
+		return archivos.
+				get(nombreArchivo).
+				getLineasTotales();
 	}
 
 	public double traerPorcentajeComent(String nombreArchivo) {
@@ -218,5 +220,9 @@ public class Controlador {
 		getMetodo(
 				nombreMetodo).
 		procesar();
+	}
+
+	public int traerVg(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getComplejidadCiclomatica();
 	}
 }
