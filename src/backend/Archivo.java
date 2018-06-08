@@ -40,10 +40,12 @@ public class Archivo {
 		calcularLineas(archivo);
 		calcularLineasTotales();
 		this.cantComentarios=0;
-		for(String linea:this.lineas)
-			linea=linea.replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText");
-		contarComentariosDobleBarra();
-		contarComentariosMultiLinea();
+		int i=0;
+		while(i<this.lineas.size()) {
+			lineas.set(i, lineas.get(i).replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText"));
+			i++;
+		}
+		contarComentarios();
 		calcularPorcentajeComentarios();
 	}
 
@@ -76,29 +78,27 @@ public class Archivo {
 		return porcentajeComentarios;
 	}
 	
-
-	/**
-	 * 
-	 * Este Ya funka, falta el otro, por ahí cuando haga el otro tenga que ajustar este
-	 */
-	private void contarComentariosDobleBarra() { //Revisa por linea de comentario, si aparece este tipo de comentario
-		//String[] var;
-		for(String linea:this.lineas) {
-			if(linea.contains("//")) {
+	
+	
+	private void contarComentarios() {
+		int i=0;
+		while(i<this.lineas.size()) {
+			if(this.lineas.get(i).contains("//")) 
 				this.cantComentarios++;
-				//var=linea.split("/*asdasd*/ad//");
+				else if(this.lineas.get(i).contains("/*")) {
+					this.cantComentarios++;
+					while(!this.lineas.get(i).contains("*/")) {
+						this.cantComentarios++;
+						i++;
+					}
+				}
+			i++;
 			}
 		}
-		
-	}
 	
-	private void contarComentariosMultiLinea() {
-		System.out.println(); 
-		//while()
-	}
 	
 	private void calcularPorcentajeComentarios() {
-		
+		this.porcentajeComentarios=this.cantComentarios/(float)this.lineasTotales;
 	}
 
 	public CompilationUnit getArbol() {
