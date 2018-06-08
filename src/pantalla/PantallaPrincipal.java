@@ -38,6 +38,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.JScrollBar;
 
 
 public class PantallaPrincipal extends JFrame {
@@ -122,8 +126,23 @@ public class PantallaPrincipal extends JFrame {
 		
 		//Listas
 		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
-		JList<String> listClases = new JList<String>(new DefaultListModel<String>());	
+		listMetodos.setValueIsAdjusting(true);
+		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		JList<String> listClases = new JList<String>(new DefaultListModel<String>());
+		contentPane.add(listClases);
 		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
+		listArchivos.setValueIsAdjusting(true);
+		listArchivos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//ScrollPanes
+		JScrollPane metScroll = new JScrollPane(listMetodos);
+		metScroll.setBounds(397, 267, 369, 135);
+		contentPane.add(metScroll);
+		JScrollPane claScroll = new JScrollPane(listClases);
+		claScroll.setBounds(10, 267, 362, 135);
+		contentPane.add(claScroll);
+		JScrollPane filScroll = new JScrollPane(listArchivos);
+		filScroll.setBounds(10, 82, 362, 120);
+		contentPane.add(filScroll);
 		
 		//Lista de metodos
 		listMetodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -191,8 +210,7 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		*/
-		listClases.setBounds(10, 267, 362, 135);
-		contentPane.add(listClases);
+		//contentPane.add(listClases);
 		
 		//Lista de archivos
 		listArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -249,8 +267,26 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		*/
+		
+		listClases.setValueIsAdjusting(true);
+		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//contentPane.add(listMetodos);
+		
+		//Lista de clases
+		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listClases.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				//Que hacer cuando clickean una clase
+				//Listar los metodos de esa clase
+				((DefaultListModel<String>) listMetodos.getModel()).removeAllElements();
+				for(String nombreMetodo : elControlador.traerMetodosDeClase(listClases.getSelectedValue()))
+					((DefaultListModel<String>) listMetodos.getModel()).addElement(nombreMetodo);
+			}
+		});
+		listClases.setBounds(1, 1, 202, 56);
 		listArchivos.setBounds(6, 77, 362, 130);
-		contentPane.add(listArchivos);
+		//contentPane.add(listArchivos);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir directorio");
 		mntmAbrir.addActionListener(new ActionListener() {
@@ -378,6 +414,19 @@ public class PantallaPrincipal extends JFrame {
 		lblClasesYMetodos.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		lblClasesYMetodos.setBounds(10, 221, 760, 26);
 		contentPane.add(lblClasesYMetodos);
+		
+		JLabel lblComplejidadCiclomatica = new JLabel("Complejidad Ciclomatica:");
+		lblComplejidadCiclomatica.setHorizontalAlignment(SwingConstants.CENTER);
+		lblComplejidadCiclomatica.setForeground(new Color(178, 34, 34));
+		lblComplejidadCiclomatica.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblComplejidadCiclomatica.setBounds(207, 449, 362, 16);
+		contentPane.add(lblComplejidadCiclomatica);
+		
+		JLabel lblvg = new JLabel("[V(G)]");
+		lblvg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblvg.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblvg.setBounds(200, 463, 369, 30);
+		contentPane.add(lblvg);
 		
 	}
 }

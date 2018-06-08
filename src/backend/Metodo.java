@@ -16,8 +16,6 @@ import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 public class Metodo {
-	
-	private static final String REGEX_METODO = "([a-zA-Z_][\\w\\<\\>]*)";
 
 	private String nombre;
 	private static String cuerpo;
@@ -49,7 +47,6 @@ public class Metodo {
 		calcularComplejidadCiclomatica();
 		calcularLongitud();
 		calcularVolumen();
-		setFanOut(calcularFanOut());
 	}
 	
 	private void calcularVolumen() {
@@ -61,20 +58,6 @@ public class Metodo {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	/**
-	 * Calcula los fan out de cada método usando la regex de métodos
-	 * para buscar en el código.
-	 * */
-	public static int calcularFanOut() {
-        int contador = 0;
-        String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
-        Pattern pat = Pattern.compile(regex);
-        Matcher mat = pat.matcher(getCuerpo());
-        while(mat.find())
-            contador++;
-        return contador;
-    }
 
 	private void calcularComplejidadCiclomatica() {
 		if(complejidadCiclomatica > 0)
