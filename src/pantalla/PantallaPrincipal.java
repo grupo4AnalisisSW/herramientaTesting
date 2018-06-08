@@ -249,12 +249,11 @@ public class PantallaPrincipal extends JFrame {
 		JMenuItem mntmAbrir = new JMenuItem("Abrir directorio");
 		mntmAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DefaultListModel dlm = new DefaultListModel();
 				JFileChooser js = new JFileChooser();
 				js.setDialogTitle("Abrir directorio");
-				js.setFileSelectionMode(js.DIRECTORIES_ONLY);
+				js.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int result = js.showOpenDialog(null);
-				if (result==js.APPROVE_OPTION) {
+				if (result==JFileChooser.APPROVE_OPTION) {
 					//Proceso el nuevo directorio
 					elControlador = new Controlador();
 					try {

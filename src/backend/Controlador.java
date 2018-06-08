@@ -155,16 +155,6 @@ public class Controlador {
 				archivos.put(arch.getNombre(), arch);
 			}
 	}
-
-	/*
-	public HashMap<String, Archivo> getArchivos() {
-		return archivos;
-	}
-
-	public HashMap<String, Clase> getClases() {
-		return clases;
-	}
-	*/
 	
 	public List<String> traerMetodosDeClase(String nombreClase) {
 		ArrayList<String> listaMetodos = new ArrayList<String>();
