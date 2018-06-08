@@ -115,5 +115,13 @@ public class Controlador {
 			listaClases.add(clase.getNombre());
 		return listaClases;
 	}
+
+	public int traerLineasArch(String nombreArchivo) {
+		return archivos.get(nombreArchivo).getLineasTotales();
+	}
+
+	public double traerPorcentajeComent(String nombreArchivo) {
+		return archivos.get(nombreArchivo).getPorcentajeComentarios();
+	}
 	
 }

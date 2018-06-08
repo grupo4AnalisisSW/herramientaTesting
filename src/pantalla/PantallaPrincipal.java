@@ -79,6 +79,44 @@ public class PantallaPrincipal extends JFrame {
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
+		//Labels con resultados
+		
+		JLabel locsLabel = new JLabel("[Cant Lineas]");
+		locsLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		locsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		locsLabel.setBounds(397, 104, 369, 30);
+		contentPane.add(locsLabel);
+		
+		JLabel porcentajeComentLabel = new JLabel("[Cant Lineas]%");
+		porcentajeComentLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		porcentajeComentLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		porcentajeComentLabel.setBounds(397, 172, 369, 30);
+		contentPane.add(porcentajeComentLabel);
+		
+		JLabel lblfanIn = new JLabel("[FAN IN]");
+		lblfanIn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblfanIn.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblfanIn.setBounds(10, 440, 362, 30);
+		contentPane.add(lblfanIn);
+		
+		JLabel lblfanOut = new JLabel("[FAN OUT]");
+		lblfanOut.setHorizontalAlignment(SwingConstants.CENTER);
+		lblfanOut.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblfanOut.setBounds(10, 504, 362, 30);
+		contentPane.add(lblfanOut);
+		
+		JLabel lbllong = new JLabel("[LONG]");
+		lbllong.setHorizontalAlignment(SwingConstants.CENTER);
+		lbllong.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lbllong.setBounds(401, 440, 369, 30);
+		contentPane.add(lbllong);
+		
+		JLabel lblvol = new JLabel("[VOL]");
+		lblvol.setHorizontalAlignment(SwingConstants.CENTER);
+		lblvol.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblvol.setBounds(401, 504, 369, 30);
+		contentPane.add(lblvol);
+		
 		//Lista de metodos
 		List listMetodos = new List();
 		listMetodos.addMouseListener(new MouseAdapter() {
@@ -114,10 +152,18 @@ public class PantallaPrincipal extends JFrame {
 				//Que hacer cuando clickean un archivo
 				//Mostrar datos de ese archivo
 				
-				/*
-				listClases.removeAll();
-				listClases.add(listArchivos.getSelectedItem());
-				*/
+				locsLabel.setText( Integer.toString(
+						elControlador.traerLineasArch(
+								listArchivos.getSelectedItem() )
+						));
+				/* Descomentar esta linea cuando esten implementados los % de comentarios
+				 * 
+				 * 
+				porcentajeComentLabel.setText(Double.toString(
+						elControlador.traerPorcentajeComent(
+							listArchivos.getSelectedItem()
+						) * 100) + "%" );
+				 */
 			}
 		});
 		listArchivos.setBounds(6, 77, 362, 130);
@@ -216,42 +262,6 @@ public class PantallaPrincipal extends JFrame {
 		lblVolumenDeHalstead.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblVolumenDeHalstead.setBounds(401, 477, 369, 16);
 		contentPane.add(lblVolumenDeHalstead);
-		
-		JLabel lblNewLabel_1 = new JLabel("[Cant Lineas]");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(397, 104, 369, 30);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel label = new JLabel("[Cant Lineas]%");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		label.setBounds(397, 172, 369, 30);
-		contentPane.add(label);
-		
-		JLabel lblfanIn = new JLabel("[FAN IN]");
-		lblfanIn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblfanIn.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblfanIn.setBounds(10, 440, 362, 30);
-		contentPane.add(lblfanIn);
-		
-		JLabel lblfanOut = new JLabel("[FAN OUT]");
-		lblfanOut.setHorizontalAlignment(SwingConstants.CENTER);
-		lblfanOut.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblfanOut.setBounds(10, 504, 362, 30);
-		contentPane.add(lblfanOut);
-		
-		JLabel lbllong = new JLabel("[LONG]");
-		lbllong.setHorizontalAlignment(SwingConstants.CENTER);
-		lbllong.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lbllong.setBounds(401, 440, 369, 30);
-		contentPane.add(lbllong);
-		
-		JLabel lblvol = new JLabel("[VOL]");
-		lblvol.setHorizontalAlignment(SwingConstants.CENTER);
-		lblvol.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblvol.setBounds(401, 504, 369, 30);
-		contentPane.add(lblvol);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(6, 213, 764, 2);
