@@ -22,7 +22,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class Metodo {
 
 	private String nombre;
-	private static String cuerpo; //Codigo
+	private String cuerpo; //Codigo
 	private int fanIn = -1;
 	private int fanOut = -1;
 	private int longitud = -1;

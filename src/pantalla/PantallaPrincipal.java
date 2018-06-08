@@ -32,6 +32,7 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -85,6 +86,8 @@ public class PantallaPrincipal extends JFrame {
 		
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
+		
+		DecimalFormat formato = new DecimalFormat("#0.00"); //Para limitar los doubles a 2 decimales
 		
 		//Labels con resultados
 		
@@ -173,7 +176,7 @@ public class PantallaPrincipal extends JFrame {
 					lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
 					lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
 					lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
-					lblvol.setText(Double.toString(elControlador.traerVolumen(clase, metodo)));
+					lblvol.setText(formato.format(elControlador.traerVolumen(clase, metodo)));
 					lblvg.setText(Integer.toString(elControlador.traerVg(clase, metodo)));
 				}
 			}
@@ -231,7 +234,7 @@ public class PantallaPrincipal extends JFrame {
 									listArchivos.getSelectedValue() )
 							));
 					
-					porcentajeComentLabel.setText(Double.toString(
+					porcentajeComentLabel.setText(formato.format(
 							elControlador.traerPorcentajeComent(
 								listArchivos.getSelectedValue()
 							) * 100) + "%" );
