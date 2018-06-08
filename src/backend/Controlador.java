@@ -39,7 +39,6 @@ public class Controlador {
 	 * usando su lista de métodos.
 	 * */
 	private void calcularFans() {
-		for (Archivo archivo : archivos.values()) {
 			for (Clase clase : clases.values()) {
 				for (Metodo metodo : clase.getMetodos().values()) {
 					metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
@@ -48,7 +47,6 @@ public class Controlador {
 							+ calcularFanOutLlamaConPunto(metodo));
 				}
 			}
-		}
 	}
 	
 	/**
