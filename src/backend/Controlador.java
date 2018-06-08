@@ -18,6 +18,9 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
  *
  */
 public class Controlador {
+	
+	private static final  String REGEX_METODO = "([a-zA-Z_][\\w\\<\\>]*)";
+	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
 	
@@ -28,34 +31,85 @@ public class Controlador {
 		//Procesamiento
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
-		calcularFansIn();
+		calcularFans();
 	}
 
 	/**
 	 * Calcula los fan in de todos los métodos de cada clase
 	 * usando su lista de métodos.
 	 * */
-	private void calcularFansIn() {
-		for (Clase clase : clases.values()) {
-			for (Metodo metodo : clase.getMetodos().values()) {
-				metodo.setFanIn(calcularFanIn(archivos.values(), metodo));
+	private void calcularFans() {
+		for (Archivo archivo : archivos.values()) {
+			for (Clase clase : clases.values()) {
+				for (Metodo metodo : clase.getMetodos().values()) {
+					metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
+							+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
+					metodo.setFanOut(calcularFanOutLlamaSinPunto(metodo)
+							+ calcularFanOutLlamaConPunto(metodo));
+				}
 			}
 		}
-		
 	}
 	
-	public static int calcularFanIn(Collection<Archivo> archivos, Metodo metodo) {
+	/**
+	 * Calcula los fan in de un metodo si es llamado sin punto adelante 
+	 * */
+	private static int calcularFanInLlamadoSinPunto(Collection<Archivo> archivos, Metodo metodo) {
         int contador = 0;
         if (metodo.getNombre().equals("main"))
             return 0;
         String regex = "\\s" + metodo.getNombre() + "\\(";
+        Pattern pat = Pattern.compile(regex);
         for (Archivo archivo : archivos) {
-            Pattern pat = Pattern.compile(regex);
             Matcher mat = pat.matcher(archivo.getCodigo());
             while(mat.find())
                 contador++;
         }
         return (contador==0)? contador:contador - 1;
+    }
+	
+	/**
+	 * Calcula los fan in de un metodo si es llamado con punto adelante 
+	 * */
+	private static int calcularFanInLlamadoConPunto(Collection<Archivo> archivos, Metodo metodo) {
+        int contador = 0;
+        if (metodo.getNombre().equals("main"))
+            return 0;
+        String regex = "[a-zA-Z]+[\\w]*[_]*." + metodo.getNombre() + "\\(";
+        Pattern pat = Pattern.compile(regex);
+        for (Archivo archivo : archivos) {
+            Matcher mat = pat.matcher(archivo.getCodigo());
+            while(mat.find())
+                contador++;
+        }
+        return (contador==0)? contador:contador - 1;
+    }
+	
+	/**
+	 * Calcula los fan out de cada método si los llama sin un punto adelante
+	 * */
+	private static int calcularFanOutLlamaSinPunto(Metodo metodo) {
+        int contador = 0;
+        String regex = "\\s" + REGEX_METODO + "\\(";
+        Pattern pat = Pattern.compile(regex);
+        Matcher mat = pat.matcher(metodo.getCuerpo());
+        while(mat.find())
+            contador++;
+        return contador;
+    }
+	
+	/**
+	 * Calcula los fan out de cada método si los llama conn un punto adelante
+	 * */
+	private static int calcularFanOutLlamaConPunto(Metodo metodo) {
+        int contador = 0;
+//        String regex = "\\w+." + REGEX_METODO + "\\(";
+        String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
+        Pattern pat = Pattern.compile(regex);
+        Matcher mat = pat.matcher(metodo.getCuerpo());
+        while(mat.find())
+            contador++;
+        return contador;
     }
 
 	/**
