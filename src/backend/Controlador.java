@@ -45,7 +45,6 @@ public class Controlador {
 	 * usando su lista de métodos.
 	 * */
 	private void calcularFansIn() {
-		clases.forEach(null);
 		for (Clase clase : clases.values()) {
 			for (Metodo metodo : clase.getMetodos()) {
 				metodo.setFanIn(calcularFanIn(archivos.values(), metodo));

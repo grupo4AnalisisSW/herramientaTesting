@@ -2,6 +2,8 @@ package backend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -29,6 +31,11 @@ public class Archivo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();//IDK
 		}
+		try {
+            this.codigo = new String(Files.readAllBytes(archivo.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		lineas=new ArrayList<String>();
 		calcularLineas(archivo);
 		calcularLineasTotales();
