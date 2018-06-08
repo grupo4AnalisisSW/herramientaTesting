@@ -25,19 +25,10 @@ public class Controlador {
 		archivos = new HashMap<String, Archivo>();
 		clases = new HashMap<String, Clase>();
 		
-		/*El orden de procesamiento tiene que ser este
-		 * Cada parte puede hacerlo esta misma clase o delegarselo a otras
-		 */
+		//Procesamiento
 		abrirYParsearArchivos(directorio);
 		armarClasesYMetodos();
-		
-		//Estas podrian ser procesarMetodos()
 		calcularFansIn();
-		//Estas 4 podrian estar dentro de Metodo
-		//calcularFansOut();
-		//calcularComplejidadesCiclomaticas();
-		//calcularLongitudes();
-		//calcularVolumenes();
 	}
 
 	/**
@@ -46,7 +37,7 @@ public class Controlador {
 	 * */
 	private void calcularFansIn() {
 		for (Clase clase : clases.values()) {
-			for (Metodo metodo : clase.getMetodos()) {
+			for (Metodo metodo : clase.getMetodos().values()) {
 				metodo.setFanIn(calcularFanIn(archivos.values(), metodo));
 			}
 		}
@@ -123,7 +114,7 @@ public class Controlador {
 	
 	public List<String> traerMetodosDeClase(String nombreClase) {
 		ArrayList<String> listaMetodos = new ArrayList<String>();
-		for(Metodo met : clases.get(nombreClase).getMetodos())
+		for(Metodo met : clases.get(nombreClase).getMetodos().values())
 			listaMetodos.add(met.getNombre());
 		return listaMetodos;
 	}
@@ -149,5 +140,29 @@ public class Controlador {
 	public double traerPorcentajeComent(String nombreArchivo) {
 		return archivos.get(nombreArchivo).getPorcentajeComentarios();
 	}
+
+	public int traerFanIn(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getFanIn();
+	}
 	
+	public int traerFanOut(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getFanOut();
+	}
+	
+	public int traerLongitud(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getLongitud();
+	}
+	
+	public int traerVolumen(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getVolumen();
+	}
+	
+	public void procesarMetodo(String nombreClase, String nombreMetodo) {
+		clases.
+		get(
+				nombreClase).
+		getMetodo(
+				nombreMetodo).
+		procesar();
+	}
 }

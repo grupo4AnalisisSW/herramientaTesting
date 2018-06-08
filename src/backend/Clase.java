@@ -1,25 +1,28 @@
 package backend;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
 public class Clase {
-	private ArrayList<Metodo> metodos;
+	private HashMap<String, Metodo> metodos;
 	private String nombre;
-	private ClassOrInterfaceDeclaration nodo;
-	
-	
 	public Clase(ClassOrInterfaceDeclaration nodo) {
-		this.nodo = nodo;
 		this.setNombre(nodo.getNameAsString());
-		this.metodos = new ArrayList<Metodo>();
-		for(MethodDeclaration metodo : nodo.getMethods())
-			metodos.add(new Metodo(metodo));
+		this.metodos = new HashMap<String, Metodo>();
+		
+		for(MethodDeclaration metodoDcl : nodo.getMethods()) {
+			Metodo metodo = new Metodo(metodoDcl);
+			metodos.put(metodo.getNombre(), metodo);
+		}
+	}
+	
+	public Metodo getMetodo(String nombre) {
+		return metodos.get(nombre);
 	}
 
-	public ArrayList<Metodo> getMetodos() {
+	public HashMap<String, Metodo> getMetodos() {
 		return metodos;
 	}
 

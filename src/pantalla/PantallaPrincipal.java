@@ -117,20 +117,30 @@ public class PantallaPrincipal extends JFrame {
 		lblvol.setBounds(401, 504, 369, 30);
 		contentPane.add(lblvol);
 		
-		//Lista de metodos
+		//Listas
 		List listMetodos = new List();
+		List listClases = new List();
+		List listArchivos = new List();
+		
+		//Lista de metodos
 		listMetodos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Que hacer cuando clickean un metodo
-				//codigo.setText(listMetodos.getSelectedItem());
+				String clase = listClases.getSelectedItem();
+				String metodo = listMetodos.getSelectedItem();
+				elControlador.procesarMetodo(clase, metodo);
+				
+				lblfanIn.setText(Integer.toString(elControlador.traerFanIn(clase, metodo)));
+				lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
+				lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
+				lblvol.setText(Integer.toString(elControlador.traerVolumen(clase, metodo)));
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
 		contentPane.add(listMetodos);
 		
 		//Lista de clases
-		List listClases = new List();
 		listClases.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -145,7 +155,6 @@ public class PantallaPrincipal extends JFrame {
 		contentPane.add(listClases);
 		
 		//Lista de archivos
-		List listArchivos = new List();
 		listArchivos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -188,11 +197,6 @@ public class PantallaPrincipal extends JFrame {
 						listArchivos.add(arch);
 					for(String clase : elControlador.traerClases())
 						listClases.add(clase);
-					/*
-					for (File f : js.getSelectedFile().listFiles()) {
-						levantarArchivos(f,".java");
-					}
-					*/
 				}
 			}
 

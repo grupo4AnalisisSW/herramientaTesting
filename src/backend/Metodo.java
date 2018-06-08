@@ -181,20 +181,11 @@ public class Metodo {
 	public int getLongitud() {
 		return longitud;
 	}
-	public void setLongitud(int longitud) {
-		this.longitud = longitud;
-	}
 	public int getVolumen() {
 		return volumen;
 	}
-	public void setVolumen(int volumen) {
-		this.volumen = volumen;
-	}
 	public int getComplejidadCiclomatica() {
 		return complejidadCiclomatica;
-	}
-	public void setComplejidadCiclomatica(int complejidadCiclomatica) {
-		this.complejidadCiclomatica = complejidadCiclomatica;
 	}
 
 	public static String getCuerpo() {
