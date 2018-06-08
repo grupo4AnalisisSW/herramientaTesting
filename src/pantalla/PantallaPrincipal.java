@@ -38,6 +38,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.JScrollBar;
 
 
 public class PantallaPrincipal extends JFrame {
@@ -122,8 +126,19 @@ public class PantallaPrincipal extends JFrame {
 		
 		//Listas
 		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
-		JList<String> listClases = new JList<String>(new DefaultListModel<String>());	
+		listMetodos.setValueIsAdjusting(true);
+		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		JList<String> listClases = new JList<String>(new DefaultListModel<String>());
+		listClases.setValueIsAdjusting(true);
+		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
+		//ScrollPanes
+		JScrollPane metScroll = new JScrollPane(listMetodos);
+		metScroll.setBounds(397, 267, 369, 135);
+		contentPane.add(metScroll);
+		JScrollPane claScroll = new JScrollPane(listClases);
+		claScroll.setBounds(10, 407, 296, -108);
+		contentPane.add(claScroll);
 		
 		//Lista de metodos
 		listMetodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -142,7 +157,7 @@ public class PantallaPrincipal extends JFrame {
 			}
 		});
 		listMetodos.setBounds(401, 265, 369, 135);
-		contentPane.add(listMetodos);
+		//contentPane.add(listMetodos);
 		
 		//Lista de clases
 		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -169,7 +184,7 @@ public class PantallaPrincipal extends JFrame {
 		});
 		*/
 		listClases.setBounds(10, 267, 362, 135);
-		contentPane.add(listClases);
+		//contentPane.add(listClases);
 		
 		//Lista de archivos
 		listArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -335,6 +350,19 @@ public class PantallaPrincipal extends JFrame {
 		lblClasesYMetodos.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		lblClasesYMetodos.setBounds(10, 221, 760, 26);
 		contentPane.add(lblClasesYMetodos);
+		
+		JLabel lblComplejidadCiclomatica = new JLabel("Complejidad Ciclomatica:");
+		lblComplejidadCiclomatica.setHorizontalAlignment(SwingConstants.CENTER);
+		lblComplejidadCiclomatica.setForeground(new Color(178, 34, 34));
+		lblComplejidadCiclomatica.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblComplejidadCiclomatica.setBounds(207, 449, 362, 16);
+		contentPane.add(lblComplejidadCiclomatica);
+		
+		JLabel lblvg = new JLabel("[V(G)]");
+		lblvg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblvg.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblvg.setBounds(200, 463, 369, 30);
+		contentPane.add(lblvg);
 		
 	}
 }
