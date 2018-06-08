@@ -21,7 +21,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
  */
 public class Controlador {
 	
-	private static final  String REGEX_METODO = "([a-zA-Z_][\\w\\<\\>]*)";
+	private static final  String REGEX_METODO = "([a-zA-Z_][\\w]*)";
 	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
@@ -47,11 +47,7 @@ public class Controlador {
 			for (Metodo metodo : clase.getMetodos().values()) {
 				metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
 						+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
-				metodo.setFanOut(
-//						calcularFanOutLlamaSinPunto(metodo) +
-//						calcularFanOutLlamaConPunto(metodo)
-						calcularFanOut(metodo)
-						);
+				metodo.setFanOut(calcularFanOut(metodo));
 			}
 		}
 	}
@@ -93,36 +89,9 @@ public class Controlador {
 	/**
 	 * Calcula los fan out de cada m�todo si los llama sin un punto adelante
 	 * */
-//	private static int calcularFanOutLlamaSinPunto(Metodo metodo) {
-//  int contador = 0;
-//  String regex = "\\s" + "(" + REGEX_METODO + ")" + "\\(";
-////  String regex = "\\s" + "[a-zA-Z]+[\\w]*[_]*" + "\\(";
-//  Pattern pat = Pattern.compile(regex);
-//  Matcher mat = pat.matcher(metodo.getCuerpo());
-//  while(mat.find())
-//      contador++;
-//  return contador;
-//}
-//
-///**
-//* Calcula los fan out de cada m�todo si los llama conn un punto adelante
-//* */
-//private static int calcularFanOutLlamaConPunto(Metodo metodo) {
-//  int contador = 0;
-//  String regex = "\\w+." + "(" + REGEX_METODO + ")" + "\\(";
-////  String regex = "." + "(" + REGEX_METODO + ")" + "\\(";
-////  String regex = "[\\S.]?" + "(" + REGEX_METODO + ")" + "\\(";
-////  String regex = "[a-zA-Z]+[\\w]*[_]*[)]?." + "[a-zA-Z]+[\\w]*[_]*" + "\\(";
-//  Pattern pat = Pattern.compile(regex);
-//  Matcher mat = pat.matcher(metodo.getCuerpo());
-//  while(mat.find())
-//      contador++;
-//  return contador;
-//}
 
 	public static int calcularFanOut(Metodo metodo) {
 	int contador = 0;
-//  String regex = "\\s|\\S." + "(" + REGEX_METODO + ")" + "\\(";
 	String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
   
 	Pattern pat = Pattern.compile(regex);
