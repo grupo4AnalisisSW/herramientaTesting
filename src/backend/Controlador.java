@@ -221,4 +221,8 @@ public class Controlador {
 				nombreMetodo).
 		procesar();
 	}
+
+	public int traerVg(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getComplejidadCiclomatica();
+	}
 }

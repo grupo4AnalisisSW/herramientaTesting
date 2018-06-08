@@ -124,6 +124,12 @@ public class PantallaPrincipal extends JFrame {
 		lblvol.setBounds(401, 504, 369, 30);
 		contentPane.add(lblvol);
 		
+		JLabel lblvg = new JLabel("[V(G)]");
+		lblvg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblvg.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblvg.setBounds(200, 463, 369, 30);
+		contentPane.add(lblvg);
+		
 		//Listas
 		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
 		//listMetodos.setValueIsAdjusting(true);
@@ -168,6 +174,7 @@ public class PantallaPrincipal extends JFrame {
 					lblfanOut.setText(Integer.toString(elControlador.traerFanOut(clase, metodo)));
 					lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
 					lblvol.setText(Integer.toString(elControlador.traerVolumen(clase, metodo)));
+					lblvg.setText(Integer.toString(elControlador.traerVg(clase, metodo)));
 				}
 			}
 		});
@@ -373,12 +380,6 @@ public class PantallaPrincipal extends JFrame {
 		lblComplejidadCiclomatica.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblComplejidadCiclomatica.setBounds(207, 449, 362, 16);
 		contentPane.add(lblComplejidadCiclomatica);
-		
-		JLabel lblvg = new JLabel("[V(G)]");
-		lblvg.setHorizontalAlignment(SwingConstants.CENTER);
-		lblvg.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblvg.setBounds(200, 463, 369, 30);
-		contentPane.add(lblvg);
 		
 	}
 }
