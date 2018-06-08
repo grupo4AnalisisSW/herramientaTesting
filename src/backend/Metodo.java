@@ -36,8 +36,9 @@ public class Metodo {
 		this.nodo = nodo;
 		this.setNombre(nodo.getNameAsString());
 		
-		String declaracion = nodo.getDeclarationAsString().replaceAll("/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/", "").replaceAll("//.*[\n\r]", "").replaceAll("^\\s*\n", "");
-        this.setCuerpo("");
+		String declaracion = nodo.getBody().toString().replaceAll("/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/", "").replaceAll("//.*[\n\r]", "").replaceAll("^\\s*\n", "");
+        
+		this.setCuerpo("");
         String[] body = declaracion.split("\\n");
         for (int i = 0; i < body.length; i++) {
             if (i != 0 && i != body.length - 1)
@@ -175,11 +176,11 @@ public class Metodo {
 		return complejidadCiclomatica;
 	}
 
-	public static String getCuerpo() {
+	public String getCuerpo() {
 		return cuerpo;
 	}
 
 	public void setCuerpo(String cuerpo) {
-		Metodo.cuerpo = cuerpo;
+		this.cuerpo = cuerpo;
 	}
 }

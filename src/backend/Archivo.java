@@ -40,8 +40,12 @@ public class Archivo {
 		calcularLineas(archivo);
 		calcularLineasTotales();
 		this.cantComentarios=0;
-		contarComentariosDobleBarra();
-		contarComentariosMultiLinea();
+		int i=0;
+		while(i<this.lineas.size()) {
+			lineas.set(i, lineas.get(i).replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText"));
+			i++;
+		}
+		contarComentarios();
 		calcularPorcentajeComentarios();
 	}
 
@@ -52,7 +56,7 @@ public class Archivo {
 		}
 		int i=0;
 		while(i<this.lineas.size()) {
-			this.lineas.set(i, lineas.get(i).trim());//this.lineas.set(i, tabTrim(lineas.get(i)))
+			this.lineas.set(i, lineas.get(i).trim());
 			if(this.lineas.get(i).equals("")) {
 				this.lineas.remove(i);
 			}
@@ -73,27 +77,28 @@ public class Archivo {
 	public double getPorcentajeComentarios() {
 		return porcentajeComentarios;
 	}
-
-	/**
-	 * 
-	 * Este Ya funka, falta el otro, por ahí cuando haga el otro tenga que ajustar este
-	 */
-	private void contarComentariosDobleBarra() { //Revisa por linea de comentario, si aparece este tipo de comentario
-		for(String linea:this.lineas) {
-			linea=linea.replaceAll("\"(?:[^\"\\\\]|\\\\.)*\"", "plainText");
-			if(linea.contains("\\\\"))
-				this.cantComentarios++;
-		}
-		
-	}
 	
-	private void contarComentariosMultiLinea() {
-		
-		//while()
-	}
+	
+	
+	private void contarComentarios() {
+		int i=0;
+		while(i<this.lineas.size()) {
+			if(this.lineas.get(i).contains("//")) 
+				this.cantComentarios++;
+				else if(this.lineas.get(i).contains("/*")) {
+					this.cantComentarios++;
+					while(!this.lineas.get(i).contains("*/")) {
+						this.cantComentarios++;
+						i++;
+					}
+				}
+			i++;
+			}
+		}
+	
 	
 	private void calcularPorcentajeComentarios() {
-		
+		this.porcentajeComentarios=this.cantComentarios/(float)this.lineasTotales;
 	}
 
 	public CompilationUnit getArbol() {
@@ -111,13 +116,5 @@ public class Archivo {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-
-	/*private String tabTrim(String linea) {
-		String newLinea=new String(linea.trim());
-		while(newLinea.endsWith("\t")) {
-			newLinea = newLinea.substring(0, newLinea.length()-1);
-		}
-		return newLinea;
-	}*/
 	
 }

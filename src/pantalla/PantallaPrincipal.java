@@ -231,14 +231,11 @@ public class PantallaPrincipal extends JFrame {
 									listArchivos.getSelectedValue() )
 							));
 					
-					/* Descomentar esta linea cuando esten implementados los % de comentarios
-					 * 
-					 * 
 					porcentajeComentLabel.setText(Double.toString(
 							elControlador.traerPorcentajeComent(
-								listArchivos.getSelectedItem()
+								listArchivos.getSelectedValue()
 							) * 100) + "%" );
-					 */
+
 				}
 			}
 		});
