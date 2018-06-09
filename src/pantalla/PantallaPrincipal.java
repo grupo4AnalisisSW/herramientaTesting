@@ -43,6 +43,8 @@ import javax.swing.UIManager;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JScrollBar;
+import java.awt.SystemColor;
+import java.awt.Component;
 
 
 public class PantallaPrincipal extends JFrame {
@@ -74,14 +76,14 @@ public class PantallaPrincipal extends JFrame {
 		
 		setTitle("Herramienta de Testing");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 584);
+		setBounds(100, 100, 1039, 584);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 784, 26);
+		menuBar.setBounds(0, 0, 1021, 26);
 		contentPane.add(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
@@ -94,64 +96,70 @@ public class PantallaPrincipal extends JFrame {
 		JLabel locsLabel = new JLabel("[Cant Lineas]");
 		locsLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
 		locsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		locsLabel.setBounds(397, 104, 369, 30);
+		locsLabel.setBounds(294, 103, 212, 30);
 		contentPane.add(locsLabel);
 		
 		JLabel porcentajeComentLabel = new JLabel("[Cant Lineas]%");
 		porcentajeComentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		porcentajeComentLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		porcentajeComentLabel.setBounds(397, 172, 369, 30);
+		porcentajeComentLabel.setBounds(294, 172, 212, 30);
 		contentPane.add(porcentajeComentLabel);
 		
-		JLabel lblfanIn = new JLabel("[FAN IN]");
+		JLabel lblfanIn = new JLabel("[FAN OUT]"); //REVISAR ESTO
 		lblfanIn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblfanIn.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblfanIn.setBounds(10, 440, 362, 30);
+		lblfanIn.setBounds(10, 440, 176, 30);
 		contentPane.add(lblfanIn);
 		
-		JLabel lblfanOut = new JLabel("[FAN OUT]");
+		JLabel lblfanOut = new JLabel("[FAN IN]");  //REVISAR ESTO
 		lblfanOut.setHorizontalAlignment(SwingConstants.CENTER);
 		lblfanOut.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblfanOut.setBounds(10, 504, 362, 30);
+		lblfanOut.setBounds(10, 504, 176, 30);
 		contentPane.add(lblfanOut);
 		
 		JLabel lbllong = new JLabel("[LONG]");
 		lbllong.setHorizontalAlignment(SwingConstants.CENTER);
 		lbllong.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lbllong.setBounds(401, 440, 369, 30);
+		lbllong.setBounds(401, 440, 176, 30);
 		contentPane.add(lbllong);
 		
 		JLabel lblvol = new JLabel("[VOL]");
 		lblvol.setHorizontalAlignment(SwingConstants.CENTER);
 		lblvol.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblvol.setBounds(401, 504, 369, 30);
+		lblvol.setBounds(401, 504, 176, 30);
 		contentPane.add(lblvol);
 		
 		JLabel lblvg = new JLabel("[V(G)]");
 		lblvg.setHorizontalAlignment(SwingConstants.CENTER);
 		lblvg.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblvg.setBounds(200, 463, 369, 30);
+		lblvg.setBounds(200, 463, 189, 30);
 		contentPane.add(lblvg);
 		
 		//Listas
 		JList<String> listMetodos = new JList<String>(new DefaultListModel<String>());
-		//listMetodos.setValueIsAdjusting(true);
 		contentPane.add(listMetodos);
 		JList<String> listClases = new JList<String>(new DefaultListModel<String>());
 		contentPane.add(listClases);
 		JList<String> listArchivos = new JList<String>(new DefaultListModel<String>());
-		//listArchivos.setValueIsAdjusting(true);
+		JTextArea codigoArea=new JTextArea();
 		
 		//ScrollPanes
 		JScrollPane metScroll = new JScrollPane(listMetodos);
-		metScroll.setBounds(397, 267, 369, 135);
+		metScroll.setBounds(294, 267, 283, 135);
 		contentPane.add(metScroll);
+		
 		JScrollPane claScroll = new JScrollPane(listClases);
-		claScroll.setBounds(10, 267, 362, 135);
+		claScroll.setBounds(10, 267, 272, 135);
 		contentPane.add(claScroll);
+		
 		JScrollPane filScroll = new JScrollPane(listArchivos);
-		filScroll.setBounds(10, 82, 362, 120);
+		filScroll.setBounds(10, 82, 272, 120);
 		contentPane.add(filScroll);
+		
+		JScrollPane codScrollPane = new JScrollPane(codigoArea);
+		codScrollPane.setBounds(608, 59, 401, 465);
+		contentPane.add(codScrollPane);
+		
 		
 		//Lista de metodos
 		listMetodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -164,8 +172,10 @@ public class PantallaPrincipal extends JFrame {
 				//Solo cuando quedo quieta ejecuto
 				if(!e.getValueIsAdjusting()) {
 					//Si no hay nada seleccionado, no hacer nada
-					if(listMetodos.isSelectionEmpty())
+					if(listMetodos.isSelectionEmpty()) {
+						codigoArea.setText("");
 						return;
+					}
 					
 					//Si hay algo seleccionado, buscar datos de ese metodo
 					String clase = listClases.getSelectedValue();
@@ -178,12 +188,12 @@ public class PantallaPrincipal extends JFrame {
 					lbllong.setText(Integer.toString(elControlador.traerLongitud(clase, metodo)));
 					lblvol.setText(formato.format(elControlador.traerVolumen(clase, metodo)));
 					lblvg.setText(Integer.toString(elControlador.traerVg(clase, metodo)));
+					codigoArea.setText(elControlador.traerCod(clase, metodo));
 				}
 			}
 		});
-		listMetodos.setBounds(401, 265, 369, 135);
+		listMetodos.setBounds(593, 106, 369, 135);
 		listMetodos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		//contentPane.add(listMetodos);
 		
 		//Lista de clases
 		listClases.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -211,8 +221,6 @@ public class PantallaPrincipal extends JFrame {
 		});
 		listClases.setBounds(1, 1, 202, 56);
 		listClases.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		//contentPane.add(listClases);
-		//listClases.setValueIsAdjusting(true);
 		
 		//Lista de archivos
 		listArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -244,7 +252,6 @@ public class PantallaPrincipal extends JFrame {
 		});
 		listArchivos.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		listArchivos.setBounds(6, 77, 362, 130);
-		//contentPane.add(listArchivos);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir directorio");
 		mntmAbrir.addActionListener(new ActionListener() {
@@ -261,8 +268,8 @@ public class PantallaPrincipal extends JFrame {
 					//Reseteo labels
 					locsLabel.setText("[Cant Lineas]");
 					porcentajeComentLabel.setText("[Cant Lineas]%");
-					lblfanIn.setText("[FAN IN]");
-					lblfanOut.setText("[FAN OUT]");
+					lblfanIn.setText("[FAN OUT]"); //REVISAR ESTO
+					lblfanOut.setText("[FAN IN]"); //REVISAR ESTO
 					lbllong.setText("[LONG]");
 					lblvol.setText("[LONG]");
 					
@@ -305,53 +312,46 @@ public class PantallaPrincipal extends JFrame {
 		JLabel lblSeleccioneUnMetodo = new JLabel("Seleccione un metodo de la lista:");
 		lblSeleccioneUnMetodo.setForeground(new Color(178, 34, 34));
 		lblSeleccioneUnMetodo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSeleccioneUnMetodo.setBounds(401, 245, 369, 16);
+		lblSeleccioneUnMetodo.setBounds(294, 245, 476, 16);
 		contentPane.add(lblSeleccioneUnMetodo);
 		
 		JLabel lblLineasDeCdigo = new JLabel("Lineas de c\u00F3digo del archivo:");
 		lblLineasDeCdigo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLineasDeCdigo.setForeground(new Color(178, 34, 34));
 		lblLineasDeCdigo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblLineasDeCdigo.setBounds(397, 77, 369, 16);
+		lblLineasDeCdigo.setBounds(294, 75, 283, 16);
 		contentPane.add(lblLineasDeCdigo);
 		
-		JLabel lblPorcentajeDeLineas = new JLabel("Porcentaje de lineas de c\u00F3digo del archivo comentadas:");
-		lblPorcentajeDeLineas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPorcentajeDeLineas.setForeground(new Color(178, 34, 34));
-		lblPorcentajeDeLineas.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPorcentajeDeLineas.setBounds(397, 145, 369, 16);
-		contentPane.add(lblPorcentajeDeLineas);
-		
-		JLabel lblFanIn = new JLabel("Fan In:");
+		JLabel lblFanIn = new JLabel("Fan Out:"); //REVISAR ESTO
 		lblFanIn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFanIn.setForeground(new Color(178, 34, 34));
 		lblFanIn.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblFanIn.setBounds(10, 413, 362, 16);
+		lblFanIn.setBounds(10, 413, 176, 16);
 		contentPane.add(lblFanIn);
 		
 		JLabel lblLongitudDeHalstead = new JLabel("Longitud de Halstead:");
 		lblLongitudDeHalstead.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLongitudDeHalstead.setForeground(new Color(178, 34, 34));
 		lblLongitudDeHalstead.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblLongitudDeHalstead.setBounds(401, 415, 369, 16);
+		lblLongitudDeHalstead.setBounds(401, 415, 176, 16);
 		contentPane.add(lblLongitudDeHalstead);
 		
-		JLabel lblFanOut = new JLabel("Fan Out:");
+		JLabel lblFanOut = new JLabel("Fan In:"); //REVISAR ESTO
 		lblFanOut.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFanOut.setForeground(new Color(178, 34, 34));
 		lblFanOut.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblFanOut.setBounds(10, 477, 362, 16);
+		lblFanOut.setBounds(10, 477, 176, 16);
 		contentPane.add(lblFanOut);
 		
 		JLabel lblVolumenDeHalstead = new JLabel("Volumen de Halstead:");
 		lblVolumenDeHalstead.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVolumenDeHalstead.setForeground(new Color(178, 34, 34));
 		lblVolumenDeHalstead.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblVolumenDeHalstead.setBounds(401, 477, 369, 16);
+		lblVolumenDeHalstead.setBounds(401, 477, 176, 16);
 		contentPane.add(lblVolumenDeHalstead);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(6, 213, 764, 2);
+		separator.setBounds(6, 213, 571, 2);
 		contentPane.add(separator);
 		
 		JLabel lblNewLabel_2 = new JLabel("Archivos .java");
@@ -372,8 +372,18 @@ public class PantallaPrincipal extends JFrame {
 		lblComplejidadCiclomatica.setHorizontalAlignment(SwingConstants.CENTER);
 		lblComplejidadCiclomatica.setForeground(new Color(178, 34, 34));
 		lblComplejidadCiclomatica.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblComplejidadCiclomatica.setBounds(207, 449, 362, 16);
+		lblComplejidadCiclomatica.setBounds(207, 449, 195, 16);
 		contentPane.add(lblComplejidadCiclomatica);
+		
+		JTextArea txtrPorcentajeDeLineas = new JTextArea();
+		txtrPorcentajeDeLineas.setLineWrap(true);
+		txtrPorcentajeDeLineas.setWrapStyleWord(true);
+		txtrPorcentajeDeLineas.setText("Porcentaje de lineas de c\u00F3digo del archivo comentadas:");
+		txtrPorcentajeDeLineas.setBackground(SystemColor.menu);
+		txtrPorcentajeDeLineas.setForeground(new Color(178, 34, 34));
+		txtrPorcentajeDeLineas.setFont(new Font("Tahoma", Font.BOLD, 13));
+		txtrPorcentajeDeLineas.setBounds(304, 130, 273, 44);
+		contentPane.add(txtrPorcentajeDeLineas);
 		
 	}
 }

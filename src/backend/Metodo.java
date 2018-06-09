@@ -16,6 +16,7 @@ import com.github.javaparser.ast.stmt.SwitchEntryStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.printer.PrettyPrinter;
 
 //import herramienta.Token;
 
@@ -182,5 +183,9 @@ public class Metodo {
 
 	public void setCuerpo(String cuerpo) {
 		this.cuerpo = cuerpo;
+	}
+	
+	public String getCod() {
+		return new PrettyPrinter().print(nodo);
 	}
 }

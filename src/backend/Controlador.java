@@ -100,11 +100,7 @@ public class Controlador {
 		for (Clase clase : clases) {
 			for (Metodo metod : clase.getMetodos().values()) {
 				if(mat.toString().contains(metod.getNombre()))
-				{
-//					System.out.println("Mat: " + mat.toString());
-//					System.out.println("Metodo: " + metod.getNombre());
 					contador++;
-				}
 			}
 		}
 	}
@@ -156,7 +152,7 @@ public class Controlador {
 					archivos.put(arch.getNombre(), arch);
 				} catch (ParseProblemException | IOException e) {
 					if(e instanceof FileNotFoundException)
-						System.out.print("No se encontró");
+						System.out.print("No se encontrï¿½");
 					else if(e instanceof IOException)
 						System.out.print("No se pudo abrir");
 					else if(e instanceof ParseProblemException)
@@ -224,5 +220,9 @@ public class Controlador {
 
 	public int traerVg(String nombreClase, String nombreMetodo) {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getComplejidadCiclomatica();
+	}
+
+	public String traerCod(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getCod();
 	}
 }
