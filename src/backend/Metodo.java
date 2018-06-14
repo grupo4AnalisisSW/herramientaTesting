@@ -16,7 +16,6 @@ import com.github.javaparser.ast.stmt.SwitchEntryStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.printer.PrettyPrinter;
 
 //import herramienta.Token;
 
@@ -24,8 +23,8 @@ public class Metodo {
 
 	private String nombre;
 	private String cuerpo; //Codigo
-	private int fanIn = -1;
 	private int fanOut = -1;
+	private int fanIn = -1;
 	private int longitud = -1;
 	private double volumen = -1;
 	private int complejidadCiclomatica = -1;
@@ -155,17 +154,17 @@ public class Metodo {
 	private void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public int getFanIn() {
-		return fanIn;
-	}
-	public void setFanIn(int fanIn) {
-		this.fanIn = fanIn;
-	}
 	public int getFanOut() {
 		return fanOut;
 	}
 	public void setFanOut(int fanOut) {
 		this.fanOut = fanOut;
+	}
+	public int getFanIn() {
+		return fanIn;
+	}
+	public void setFanIn(int fanIn) {
+		this.fanIn = fanIn;
 	}
 	public int getLongitud() {
 		return longitud;
@@ -183,9 +182,5 @@ public class Metodo {
 
 	public void setCuerpo(String cuerpo) {
 		this.cuerpo = cuerpo;
-	}
-	
-	public String getCod() {
-		return new PrettyPrinter().print(nodo);
 	}
 }

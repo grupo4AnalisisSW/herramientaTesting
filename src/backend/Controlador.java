@@ -25,6 +25,12 @@ public class Controlador {
 	
 	private HashMap<String, Archivo> archivos;
 	private HashMap<String, Clase> clases;
+	
+	/**
+	 * Es una lista que contiene todos los metodos.
+	 * Usada por fan in y fan out
+	 * */
+	private static ArrayList<Metodo> metodos = new ArrayList<Metodo>();
 
 	public Controlador() {
 		archivos = new HashMap<String, Archivo>();
@@ -39,73 +45,75 @@ public class Controlador {
 	}
 
 	/**
-	 * Calcula los fan in de todos los mï¿½todos de cada clase
-	 * usando su lista de mï¿½todos.
+	 * Calcula los fan in y out de todos los metodos de cada clase
+	 * usando su lista de metodos.
 	 * */
 	private void calcularFans() {
 		for (Clase clase : clases.values()) {
 			for (Metodo metodo : clase.getMetodos().values()) {
-				metodo.setFanIn(calcularFanInLlamadoSinPunto(archivos.values(), metodo)
-						+ calcularFanInLlamadoConPunto(archivos.values(), metodo));
-				metodo.setFanOut(calcularFanOut(metodo,clases.values()));
+				System.out.println("Clase: " + clase.getNombre());
+				System.out.println("Metodo:" + metodo.getNombre());
+				metodo.setFanOut(calcularFanOut(archivos.values(), metodo));
+				metodo.setFanIn(calcularFanIn(metodo));
 			}
 		}
 	}
 	
 	/**
-	 * Calcula los fan in de un metodo si es llamado sin punto adelante 
+	 * Calcula los fan out de un metodo todas las veces que es llamado.
 	 * */
-	private static int calcularFanInLlamadoSinPunto(Collection<Archivo> archivos, Metodo metodo) {
+	private static int calcularFanOut(Collection<Archivo> archivos, Metodo metodo) {
         int contador = 0;
         if (metodo.getNombre().equals("main"))
             return 0;
-        String regex = "\\s" + metodo.getNombre() + "\\(";
+        String regex = "[\\s.]?" + metodo.getNombre() + "\\(";
         Pattern pat = Pattern.compile(regex);
-        for (Archivo archivo : archivos) {
-            Matcher mat = pat.matcher(archivo.getCodigo());
+        
+    	for (Archivo archivo : archivos) {
+    		Matcher mat = pat.matcher(archivo.getCodigo());
             while(mat.find())
                 contador++;
-        }
+		}  
         return (contador==0)? contador:contador - 1;
     }
 	
 	/**
-	 * Calcula los fan in de un metodo si es llamado con punto adelante 
-	 * */
-	private static int calcularFanInLlamadoConPunto(Collection<Archivo> archivos, Metodo metodo) {
-        int contador = 0;
-        if (metodo.getNombre().equals("main"))
-            return 0;
-        String regex = "[a-zA-Z]+[\\w]*[_]*." + metodo.getNombre() + "\\(";
-        Pattern pat = Pattern.compile(regex);
-        for (Archivo archivo : archivos) {
-            Matcher mat = pat.matcher(archivo.getCodigo());
-            while(mat.find())
-                contador++;
-        }
-        return (contador==0)? contador:contador - 1;
-    }
-	
-	/**
-	 * Calcula los fan out de cada mï¿½todo si los llama sin un punto adelante
+	 * Calcula los fan in de cada metodo.
+	 * Encuentra todos los metodos llamados por el metodos estudiado,
+	 * aun con repeticion de nombre.
 	 * */
 
-	public static int calcularFanOut(Metodo metodo, Collection<Clase> clases) {
-	int contador = 0;
-	String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
-  
-	Pattern pat = Pattern.compile(regex);
-	Matcher mat = pat.matcher(metodo.getCuerpo());
-	while(mat.find()) {
-		for (Clase clase : clases) {
-			for (Metodo metod : clase.getMetodos().values()) {
-				if(mat.toString().contains(metod.getNombre()))
+	private static int calcularFanIn(Metodo metodo) {
+		int contador = 0,i;
+		boolean encontrado = false;
+		String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
+		
+//		ArrayList<String> metodosEncontrados = new ArrayList<String>();
+		
+		Pattern pat = Pattern.compile(regex);
+		Matcher mat = pat.matcher(metodo.getCuerpo());
+		
+		while(mat.find()) {
+			i=0;
+			while( i < metodos.size() && !encontrado 
+					//&& !metodosEncontrados.contains(metodos.get(i))
+					) {
+				
+				if(//!metodosEncontrados.contains(metodos.get(i).getNombre()) &&
+						mat.toString().contains(metodos.get(i).getNombre())){
+//					metodosEncontrados.add(metodos.get(i).getNombre());
+					System.out.println(metodos.get(i).getNombre());
+					encontrado = true;
 					contador++;
+				}
+				
+				i++;
 			}
+			encontrado = false;
 		}
+		return contador;
 	}
-	return contador;
-	}
+	
 
 	/**
 	 * Genera la lista de Clases a partir de los Archivos.
@@ -119,6 +127,8 @@ public class Controlador {
                     super.visit(n, arg);
                     Clase clase = new Clase(n);
                     clases.put(clase.getNombre(), clase);
+                    //listo los metodos de todas las clases
+                    metodos.addAll(clase.getMetodos().values());
                 }
             }.visit(arch.getArbol(), null);
 		}
@@ -152,7 +162,7 @@ public class Controlador {
 					archivos.put(arch.getNombre(), arch);
 				} catch (ParseProblemException | IOException e) {
 					if(e instanceof FileNotFoundException)
-						System.out.print("No se encontrï¿½");
+						System.out.print("No se encontró");
 					else if(e instanceof IOException)
 						System.out.print("No se pudo abrir");
 					else if(e instanceof ParseProblemException)
@@ -193,12 +203,12 @@ public class Controlador {
 		return archivos.get(nombreArchivo).getPorcentajeComentarios();
 	}
 
-	public int traerFanIn(String nombreClase, String nombreMetodo) {
-		return clases.get(nombreClase).getMetodo(nombreMetodo).getFanIn();
-	}
-	
 	public int traerFanOut(String nombreClase, String nombreMetodo) {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getFanOut();
+	}
+	
+	public int traerFanIn(String nombreClase, String nombreMetodo) {
+		return clases.get(nombreClase).getMetodo(nombreMetodo).getFanIn();
 	}
 	
 	public int traerLongitud(String nombreClase, String nombreMetodo) {
@@ -220,9 +230,5 @@ public class Controlador {
 
 	public int traerVg(String nombreClase, String nombreMetodo) {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getComplejidadCiclomatica();
-	}
-
-	public String traerCod(String nombreClase, String nombreMetodo) {
-		return clases.get(nombreClase).getMetodo(nombreMetodo).getCod();
 	}
 }
