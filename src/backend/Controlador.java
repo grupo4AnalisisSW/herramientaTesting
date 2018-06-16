@@ -88,20 +88,14 @@ public class Controlador {
 		boolean encontrado = false;
 		String regex = "[\\s.]?" + "(" + REGEX_METODO + ")" + "\\(";
 		
-//		ArrayList<String> metodosEncontrados = new ArrayList<String>();
-		
 		Pattern pat = Pattern.compile(regex);
 		Matcher mat = pat.matcher(metodo.getCuerpo());
 		
 		while(mat.find()) {
 			i=0;
-			while( i < metodos.size() && !encontrado 
-					//&& !metodosEncontrados.contains(metodos.get(i))
-					) {
+			while( i < metodos.size() && !encontrado ) {
 				
-				if(//!metodosEncontrados.contains(metodos.get(i).getNombre()) &&
-						mat.toString().contains(metodos.get(i).getNombre())){
-//					metodosEncontrados.add(metodos.get(i).getNombre());
+				if(	mat.toString().contains(metodos.get(i).getNombre())){
 					System.out.println(metodos.get(i).getNombre());
 					encontrado = true;
 					contador++;
@@ -231,4 +225,8 @@ public class Controlador {
 	public int traerVg(String nombreClase, String nombreMetodo) {
 		return clases.get(nombreClase).getMetodo(nombreMetodo).getComplejidadCiclomatica();
 	}
+	
+	public String traerCod(String nombreClase, String nombreMetodo) { 
+	    return clases.get(nombreClase).getMetodo(nombreMetodo).getCod(); 
+	 }
 }

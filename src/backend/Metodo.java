@@ -1,9 +1,6 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
@@ -16,8 +13,7 @@ import com.github.javaparser.ast.stmt.SwitchEntryStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-
-//import herramienta.Token;
+import com.github.javaparser.printer.PrettyPrinter;
 
 public class Metodo {
 
@@ -183,4 +179,8 @@ public class Metodo {
 	public void setCuerpo(String cuerpo) {
 		this.cuerpo = cuerpo;
 	}
+	
+	public String getCod() { 
+	    return new PrettyPrinter().print(nodo); 
+	 } 
 }
